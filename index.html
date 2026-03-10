@@ -180,21 +180,112 @@
         .step-line { width: 20px; height: 2px; background: var(--border); transition: background 0.3s ease; }
         .step-line.completed { background: var(--teal); }
         @keyframes dotPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.3); } 50% { box-shadow: 0 0 0 6px rgba(245, 166, 35, 0); } }
+        /* ========== BASE RESPONSIVE SAFETY ========== */
+        img, video, svg { max-width: 100%; height: auto; }
+        .screen * { max-width: 100%; box-sizing: border-box; }
+        .screen .btn, .screen .choice-btn, .screen .chapter-badge,
+        .screen .hud-item, .screen .audio-toggle, .screen .step-dot,
+        .screen .step-line, .screen .how-step-icon, .screen .stat-bar-fill,
+        .screen .score-circle, .screen .score-circle svg, .screen .score-circle circle { max-width: none; }
+
+        /* ========== TABLET & MOBILE: max-width 768px ========== */
         @media (max-width: 768px) {
-            .screen { padding: 1rem; padding-top: 2.5rem; }
-            .narrative-box { padding: 1.5rem; font-size: 0.95rem; }
-            .hud { top: 12px; right: 12px; gap: 0.5rem; }
-            .hud-item { padding: 0.4rem 0.6rem; min-width: 55px; }
-            .hud-item .hud-value { font-size: 1rem; }
-            .cta-grid { grid-template-columns: 1fr; }
-            .tool-reveal { padding: 1.5rem; }
-            .stats-bars { grid-template-columns: 1fr; }
-            .choice-btn { font-size: 0.9rem; padding: 1rem; }
-            .btn { padding: 0.85rem 1.8rem; font-size: 1rem; }
+            body { overflow-y: auto; overflow-x: hidden; height: auto; min-height: 100vh; }
+            #game { height: auto; min-height: 100vh; overflow: visible; }
+            .screen { padding: 1rem; padding-top: 3rem; padding-bottom: 5rem; min-height: 100vh; height: auto; overflow-y: visible; }
+            .screen.active { position: relative; top: auto; left: auto; }
+            .narrative-box { padding: 1.25rem; font-size: 0.95rem; max-width: 100%; border-radius: 14px; }
+            .hud { top: 8px; right: 8px; gap: 0.4rem; }
+            .hud-item { padding: 0.35rem 0.5rem; min-width: 50px; border-radius: 8px; }
+            .hud-item .hud-label { font-size: 0.6rem; letter-spacing: 0.5px; }
+            .hud-item .hud-value { font-size: 0.95rem; }
+            .cta-grid { grid-template-columns: 1fr; max-width: 100%; gap: 0.75rem; }
+            .cta-card { padding: 1.25rem; border-radius: 14px; }
+            .tool-reveal { padding: 1.25rem; max-width: 100%; border-radius: 14px; }
+            .tool-reveal h3 { font-size: 1.25rem; }
+            .tool-reveal-icon { font-size: 2.5rem; }
+            .stats-bars { grid-template-columns: 1fr; max-width: 100%; }
+            .choice-btn { font-size: 0.95rem; padding: 1rem 1.2rem; min-height: 48px; padding-right: 2rem; border-radius: 12px; }
+            .btn { padding: 0.85rem 1.8rem; font-size: 1rem; min-height: 48px; border-radius: 1.5em; }
+            .btn-cta { padding: 0.85rem 1.5rem; font-size: 0.95rem; min-height: 48px; }
             .how-steps { flex-direction: column; gap: 0.6rem; }
             .how-step { flex-direction: row; text-align: left; padding: 0.7rem 1rem; }
             .how-step-text { text-align: left; }
-            #screen-title { padding-top: 1.5rem; }
+            .how-it-works { max-width: 100%; }
+            #screen-title { padding-top: 1.5rem; justify-content: flex-start; }
+            .chapter-title { font-size: clamp(1.4rem, 5vw, 2.2rem); }
+            .choices-container { max-width: 100%; }
+            .feedback-box { max-width: 100%; padding: 1.2rem; font-size: 0.95rem; }
+            .buttons-row { flex-direction: column; width: 100%; max-width: 400px; }
+            .buttons-row .btn { width: 100%; justify-content: center; text-align: center; }
+            .philosophy-box { max-width: 100%; }
+            .score-circle { width: 150px; height: 150px; }
+            .score-number { font-size: 2.4rem; }
+            .rank-title { font-size: 1.3rem; }
+            .rank-description { font-size: 0.9rem; max-width: 100%; }
+            .exiliance-watermark { bottom: 8px; font-size: 0.65rem; }
+            .audio-toggle { bottom: 12px; right: 12px; width: 44px; height: 44px; }
+            .score-pop { top: 45px; right: 15px; font-size: 1rem; }
+            .chapter-stepper { margin-bottom: 0.75rem; }
+            .step-dot { width: 8px; height: 8px; }
+            .step-line { width: 14px; }
+            .progress-bar-container { height: 3px; }
+            .chapter-transition .chapter-name { font-size: clamp(1.5rem, 5vw, 2.5rem); }
+            .title-logo-box { padding: 1rem 1.8rem 0.8rem; border-radius: 12px; }
+            .title-logo-img { height: 60px; }
+        }
+
+        /* ========== SMALL MOBILE: max-width 480px ========== */
+        @media (max-width: 480px) {
+            .screen { padding: 0.75rem; padding-top: 2.5rem; padding-bottom: 4.5rem; }
+            .title-logo { font-size: clamp(1.8rem, 8vw, 3rem); }
+            .title-subtitle { font-size: clamp(0.9rem, 3vw, 1.1rem); }
+            .title-tagline { font-size: 0.9rem; margin-bottom: 1.5rem; }
+            .narrative-box { padding: 1rem; font-size: 0.9rem; line-height: 1.7; border-radius: 12px; }
+            .narrative-box p { font-size: 0.9rem; }
+            .chapter-title { font-size: clamp(1.2rem, 5.5vw, 1.8rem); }
+            .chapter-badge { font-size: 0.7rem; padding: 0.35rem 0.8rem; letter-spacing: 1px; }
+            .choice-btn { font-size: 0.9rem; padding: 0.9rem 1rem; padding-right: 1.8rem; min-height: 48px; line-height: 1.5; }
+            .choice-btn::before { right: 0.6rem; }
+            .btn { padding: 0.8rem 1.5rem; font-size: 0.95rem; min-height: 48px; }
+            .btn-cta { padding: 0.75rem 1.2rem; font-size: 0.9rem; min-height: 48px; display: flex; justify-content: center; text-align: center; white-space: normal; word-break: break-word; }
+            .feedback-box { padding: 1rem; font-size: 0.9rem; line-height: 1.6; border-radius: 10px; }
+            .tool-reveal { padding: 1rem; border-radius: 12px; }
+            .tool-reveal h3 { font-size: 1.1rem; }
+            .tool-reveal p { font-size: 0.88rem; }
+            .tool-reveal .feature-list li { font-size: 0.88rem; }
+            .tool-reveal-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+            .hud { top: 6px; right: 6px; gap: 0.3rem; }
+            .hud-item { padding: 0.3rem 0.45rem; min-width: 44px; border-radius: 8px; }
+            .hud-item .hud-label { font-size: 0.55rem; }
+            .hud-item .hud-value { font-size: 0.85rem; }
+            .score-circle { width: 130px; height: 130px; }
+            .score-number { font-size: 2rem; }
+            .score-label { font-size: 0.7rem; }
+            .rank-title { font-size: 1.15rem; }
+            .rank-description { font-size: 0.85rem; line-height: 1.5; padding: 0 0.5rem; }
+            .cta-card { padding: 1rem; border-radius: 12px; }
+            .cta-card h4 { font-size: 1rem; }
+            .cta-card p { font-size: 0.85rem; }
+            .stats-bars { gap: 0.5rem; }
+            .stat-bar { padding: 0.6rem 0.8rem; border-radius: 10px; }
+            .stat-bar-label { font-size: 0.7rem; }
+            .stat-bar-value { font-size: 0.8rem; }
+            .how-step-text strong { font-size: 0.8rem; }
+            .how-step-text span { font-size: 0.72rem; }
+            .how-step-icon { width: 28px; height: 28px; font-size: 0.8rem; }
+            .philosophy-box { padding: 0.9rem 1rem; }
+            .philosophy-box p { font-size: 0.82rem; }
+            .buttons-row { gap: 0.6rem; }
+            .audio-toggle { bottom: 10px; right: 10px; width: 40px; height: 40px; font-size: 1.1rem; }
+            .audio-toggle .audio-bars { height: 14px; }
+            .audio-toggle .audio-bars span { width: 2px; }
+            .exiliance-watermark { font-size: 0.6rem; letter-spacing: 2px; bottom: 6px; }
+            .chapter-transition .chapter-num { font-size: 0.75rem; letter-spacing: 3px; }
+            .chapter-transition .chapter-name { font-size: clamp(1.3rem, 6vw, 2rem); }
+            #screen-title { padding-top: 1rem; }
+            .title-logo-box { padding: 0.8rem 1.2rem 0.6rem; border-radius: 10px; }
+            .title-logo-img { height: 48px; }
         }
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
@@ -231,8 +322,8 @@
 <canvas id="particles-canvas"></canvas>
 <div id="game">
     <div class="screen active" id="screen-title">
-        <div style="background: var(--teal); border-radius: 16px; padding: 1.2rem 2.5rem 1rem; margin-bottom: 0.8rem; display: inline-block;">
-            <img src="https://www.exiliance.com/wp-content/uploads/logo-exiliance.png" alt="Exiliance" style="height: 80px; object-fit: contain; display: block;">
+        <div class="title-logo-box" style="background: var(--teal); border-radius: 16px; padding: 1.2rem 2.5rem 1rem; margin-bottom: 0.8rem; display: inline-block; max-width: 100%;">
+            <img src="https://www.exiliance.com/wp-content/uploads/logo-exiliance.png" alt="Exiliance" class="title-logo-img" style="height: 80px; max-width: 100%; object-fit: contain; display: block;">
         </div>
         <div class="title-subtitle">L'Odyss&eacute;e de la Protection Sociale</div>
         <div class="title-tagline">
