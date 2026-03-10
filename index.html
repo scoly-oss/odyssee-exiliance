@@ -291,6 +291,42 @@
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: rgba(29, 53, 87, 0.15); border-radius: 3px; }
         ::-webkit-scrollbar-thumb:hover { background: rgba(29, 53, 87, 0.25); }
+        .glossary {
+            position: relative;
+            border-bottom: 1px dotted var(--orange);
+            cursor: help;
+            color: inherit;
+            font-weight: inherit;
+        }
+        .glossary::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: calc(100% + 8px);
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--teal-dark);
+            color: white;
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.82rem;
+            font-weight: 400;
+            font-style: normal;
+            line-height: 1.5;
+            white-space: normal;
+            width: max-content;
+            max-width: 300px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            font-family: 'Inter', sans-serif;
+            text-align: left;
+        }
+        .glossary:hover::after, .glossary:focus::after, .glossary:active::after {
+            opacity: 1;
+            pointer-events: auto;
+        }
     </style>
 </head>
 <body>
@@ -317,7 +353,7 @@
     </div>
 </button>
 <div class="exiliance-watermark">
-    <a href="https://www.exiliance.com" target="_blank">Exiliance</a>
+    <a href="https://www.exiliance.com" target="_blank">Exiliance</a> &middot; ORIAS : 17002631 / 25008215
 </div>
 <canvas id="particles-canvas"></canvas>
 <div id="game">
@@ -369,18 +405,21 @@
             ~8 minutes &bull; 5 chapitres
         </p>
         <p style="margin-top: 0.5rem; color: rgba(29,53,87,0.25); font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;">
-            EXILIANCE &mdash; Sant&eacute; &bull; Pr&eacute;voyance &bull; Retraite
+            EXILIANCE &mdash; Santé &bull; Prévoyance &bull; Retraite
+        </p>
+        <p style="margin-top: 0.3rem; color: rgba(29,53,87,0.2); font-size: 0.65rem; letter-spacing: 1px;">
+            ORIAS : 17002631 / 25008215
         </p>
     </div>
     <div class="screen" id="screen-prologue">
         <span class="chapter-badge teal">Prologue</span>
         <h2 class="chapter-title">Votre Mission</h2>
         <div class="narrative-box">
-            <p>Vous venez d'&ecirc;tre nomm&eacute;(e) DRH d'<span class="highlight">IndustriePlus</span>, une ETI industrielle de 120 salari&eacute;s qui vient de finaliser l'acquisition de <span class="highlight">TechnoPlus</span> (60 salari&eacute;s).</p>
-            <p><strong>Lundi matin, 8h30.</strong> La direction g&eacute;n&eacute;rale vous convoque :</p>
-            <p><em class="highlight">&laquo; Les contrats d'assurance de TechnoPlus expirent dans 3 mois, leurs taux retraite sont incoh&eacute;rents, et 4 seniors partent l'an prochain. On compte sur vous. &raquo;</em></p>
-            <p>180 salari&eacute;s. 5 crises de protection sociale. Des d&eacute;cisions &agrave; prendre.</p>
-            <p class="emphasis">&Ecirc;tes-vous pr&ecirc;t(e) ?</p>
+            <p>Vous venez d'être nommé(e) DRH d'<span class="highlight">IndustriePlus</span>, une <span class="glossary" data-tooltip="Entreprise de Taille Intermédiaire : entre 250 et 4 999 salariés, avec un CA inférieur à 1,5 milliard d'euros.">ETI</span> industrielle de 120 salariés qui vient de finaliser l'acquisition de <span class="highlight">TechnoPlus</span> (60 salariés).</p>
+            <p><strong>Lundi matin, 8h30.</strong> La direction générale vous convoque :</p>
+            <p><em class="highlight">&laquo; Les contrats d'assurance de TechnoPlus expirent dans 3 mois, leurs taux retraite sont incohérents, et 4 seniors partent l'an prochain. On compte sur vous. &raquo;</em></p>
+            <p>180 salariés. 5 crises de protection sociale. Des décisions à prendre.</p>
+            <p class="emphasis">Êtes-vous prêt(e) ?</p>
         </div>
         <button class="btn btn-primary" onclick="goToChapter(1)">
             Relever le d&eacute;fi &#10148;
@@ -391,10 +430,10 @@
         <h2 class="chapter-title">La Mutuelle en Feu</h2>
         <div class="narrative-box">
             <p><strong>Mardi, 9h.</strong> Votre courtier vous appelle avec une mauvaise nouvelle.</p>
-            <p>L'assureur sant&eacute;/pr&eacute;voyance du groupe annonce une <span class="highlight">hausse de 28% des cotisations</span>. Motif : deux arr&ecirc;ts longue dur&eacute;e et un d&eacute;c&egrave;s l'an dernier ont fait exploser la sinistralit&eacute;.</p>
-            <p>Le CSE exige des explications. Les salari&eacute;s de TechnoPlus, habitu&eacute;s &agrave; des <span class="emphasis">garanties sup&eacute;rieures</span>, refusent tout nivellement par le bas.</p>
+            <p>L'assureur <span class="glossary" data-tooltip="La complémentaire santé couvre les frais médicaux non remboursés par la Sécurité sociale (consultations, optique, dentaire...). La prévoyance couvre les risques lourds : arrêt de travail, invalidité, décès.">santé/prévoyance</span> du groupe annonce une <span class="highlight">hausse de 28% des cotisations</span>. Motif : deux arrêts longue durée et un décès l'an dernier ont fait exploser la <span class="glossary" data-tooltip="La sinistralité mesure le rapport entre les prestations versées par l'assureur (remboursements, indemnités) et les cotisations encaissées. Un ratio supérieur à 100% signifie que l'assureur perd de l'argent sur le contrat.">sinistralité</span>.</p>
+            <p>Le <span class="glossary" data-tooltip="Comité Social et Économique : instance représentative du personnel obligatoire dans les entreprises de 11 salariés et plus. Il remplace les anciens CE, DP et CHSCT.">CSE</span> exige des explications. Les salariés de TechnoPlus, habitués à des <span class="emphasis">garanties supérieures</span>, refusent tout nivellement par le bas.</p>
             <p>Le renouvellement est dans <span class="highlight">2 mois</span>.</p>
-            <p class="emphasis">Que faites-vous en priorit&eacute; ?</p>
+            <p class="emphasis">Que faites-vous en priorité ?</p>
         </div>
         <div class="choices-container" id="ch1-choices">
             <button class="choice-btn" data-choice="1" onclick="selectChoice('ch1', 1)">
@@ -417,16 +456,16 @@
         <h2 class="chapter-title">Ma&icirc;triser sa sinistralit&eacute;</h2>
         <div class="tool-reveal">
             <div class="tool-reveal-icon">&#128737;&#65039;</div>
-            <h3>Accompagnement Pr&eacute;voyance &amp; Sant&eacute;</h3>
-            <p>Exiliance audite votre sinistralit&eacute;, lance un appel d'offres structur&eacute; et n&eacute;gocie des tarifs comp&eacute;titifs adapt&eacute;s &agrave; la r&eacute;alit&eacute; de votre entreprise : p&eacute;nibilit&eacute;, absent&eacute;isme, d&eacute;mographie.</p>
+            <h3>Accompagnement Prévoyance &amp; Santé</h3>
+            <p>La <span class="glossary" data-tooltip="Ensemble des dispositifs qui complètent la Sécurité sociale : complémentaire santé (mutuelle) pour les frais médicaux, et prévoyance pour les risques lourds (arrêt de travail, invalidité, décès).">protection sociale complémentaire</span> est un enjeu majeur. Exiliance audite votre sinistralité, lance un appel d'offres structuré et négocie des tarifs compétitifs adaptés à la réalité de votre entreprise.</p>
             <ul class="feature-list">
-                <li>Audit de sinistralit&eacute; et analyse d&eacute;mographique</li>
+                <li>Audit de sinistralité et analyse démographique</li>
                 <li>Appel d'offres multi-assureurs</li>
-                <li>N&eacute;gociation tarifaire sur-mesure</li>
-                <li>Pilotage continu des contrats</li>
+                <li>Négociation tarifaire sur-mesure</li>
+                <li>Pilotage continu avec 2 réunions annuelles</li>
             </ul>
             <a href="docs/Exiliance-Prevoyance-Sante.pdf" download class="btn btn-cta">
-                📄 T&eacute;l&eacute;charger la fiche Pr&eacute;voyance &amp; Sant&eacute;
+                📄 Télécharger la fiche Prévoyance &amp; Santé
             </a>
         </div>
         <button class="btn btn-secondary" onclick="goToChapter(2)">
@@ -437,9 +476,9 @@
         <span class="chapter-badge orange">Chapitre 2 &mdash; Retraite compl&eacute;mentaire</span>
         <h2 class="chapter-title">Le Casse-t&ecirc;te AGIRC-ARRCO</h2>
         <div class="narrative-box">
-            <p><strong>Jeudi matin.</strong> Le service paie vous alerte : la DSN de TechnoPlus g&eacute;n&egrave;re des <span class="highlight">erreurs syst&eacute;matiques</span>.</p>
-            <p>En creusant, vous d&eacute;couvrez que TechnoPlus avait des <span class="emphasis">taux d&eacute;rogatoires AGIRC-ARRCO</span> bien sup&eacute;rieurs aux v&ocirc;tres. Les salari&eacute;s transf&eacute;r&eacute;s cotisent &agrave; des taux diff&eacute;rents pour un m&ecirc;me poste.</p>
-            <p>L'AGIRC-ARRCO vous demande de <span class="highlight">r&eacute;gulariser sous 6 mois</span>.</p>
+            <p><strong>Jeudi matin.</strong> Le service paie vous alerte : la <span class="glossary" data-tooltip="Déclaration Sociale Nominative : déclaration mensuelle obligatoire transmise par l'employeur. Elle regroupe toutes les données sociales (salaires, cotisations, arrêts) et remplace la plupart des déclarations sociales.">DSN</span> de TechnoPlus génère des <span class="highlight">erreurs systématiques</span>.</p>
+            <p>En creusant, vous découvrez que TechnoPlus avait des <span class="glossary" data-tooltip="AGIRC-ARRCO est le régime de retraite complémentaire obligatoire des salariés du privé. Il fonctionne par points : les cotisations achètent des points, qui sont convertis en pension à la retraite. Les taux dérogatoires sont des taux de cotisation supérieurs aux minimums légaux, souscrits volontairement par certaines entreprises.">taux dérogatoires AGIRC-ARRCO</span> bien supérieurs aux vôtres. Les salariés transférés cotisent à des taux différents pour un même poste.</p>
+            <p>L'AGIRC-ARRCO vous demande de <span class="highlight">régulariser sous 6 mois</span>. Le non-respect de l'équité entre salariés constitue un risque juridique.</p>
             <p class="emphasis">Que faites-vous ?</p>
         </div>
         <div class="choices-container" id="ch2-choices">
@@ -464,15 +503,15 @@
         <div class="tool-reveal">
             <div class="tool-reveal-icon">&#128200;</div>
             <h3>Consolidation AGIRC-ARRCO</h3>
-            <p>Exiliance r&eacute;alise un &eacute;tat des lieux complet, calcule le TMP r&eacute;glementaire, n&eacute;gocie avec les caisses et r&eacute;dige l'accord d'entreprise en partenariat avec Dairia Avocats.</p>
+            <p>Après une fusion, les taux de cotisation retraite peuvent varier d'une entité à l'autre. Le <span class="glossary" data-tooltip="Taux Moyen Pondéré : mécanisme réglementaire qui permet d'harmoniser les différents taux de cotisation AGIRC-ARRCO après une fusion. Il est calculé en fonction des effectifs et des rémunérations de chaque structure.">TMP (Taux Moyen Pondéré)</span> est la solution réglementaire pour harmoniser ces écarts tout en respectant l'équité entre salariés.</p>
             <ul class="feature-list">
-                <li>Recensement des taux par structure</li>
-                <li>Calcul du TMP r&eacute;glementaire</li>
-                <li>N&eacute;gociation avec les caisses de retraite</li>
-                <li>R&eacute;daction de l'accord d'entreprise (Dairia Avocats)</li>
+                <li>Recensement des taux par structure et par tranche</li>
+                <li>Calcul du TMP réglementaire</li>
+                <li>Négociation avec les caisses de retraite</li>
+                <li>Rédaction de l'accord d'entreprise (partenariat Dairia Avocats)</li>
             </ul>
             <a href="docs/Exiliance-Consolidation-AGIRC-ARRCO.pdf" download class="btn btn-cta">
-                📄 T&eacute;l&eacute;charger la fiche AGIRC-ARRCO
+                📄 Télécharger la fiche AGIRC-ARRCO
             </a>
         </div>
         <button class="btn btn-secondary" onclick="goToChapter(3)">
@@ -483,9 +522,9 @@
         <span class="chapter-badge orange">Chapitre 3 &mdash; &Eacute;pargne salariale</span>
         <h2 class="chapter-title">L'&Eacute;pargne Oubli&eacute;e</h2>
         <div class="narrative-box">
-            <p><strong>Lundi suivant.</strong> Un d&eacute;l&eacute;gu&eacute; syndical d&eacute;barque dans votre bureau :</p>
-            <p><em class="highlight">&laquo; Avec 180 salari&eacute;s, la participation est obligatoire. TechnoPlus n'avait rien. Nos accords d'int&eacute;ressement expirent dans 4 mois. Si vous ne r&eacute;gularisez pas, je saisis l'inspection du travail. &raquo;</em></p>
-            <p>Le DAF ajoute : <span class="emphasis">&laquo; Et le PEE actuel est sous-performant, les salari&eacute;s se plaignent. &raquo;</span></p>
+            <p><strong>Lundi suivant.</strong> Un délégué syndical débarque dans votre bureau :</p>
+            <p><em class="highlight">&laquo; Avec 180 salariés, la <span class="glossary" data-tooltip="La participation est un mécanisme obligatoire dans les entreprises de 50+ salariés. Elle redistribue une partie des bénéfices aux salariés selon une formule légale. Les sommes sont bloquées 5 ans (sauf cas de déblocage anticipé).">participation</span> est obligatoire. TechnoPlus n'avait rien. Nos accords d'<span class="glossary" data-tooltip="L'intéressement est un dispositif facultatif qui permet de verser aux salariés une prime liée aux résultats ou à la performance de l'entreprise. Avantage : exonéré de charges sociales (hors CSG/CRDS) et déductible du bénéfice imposable.">intéressement</span> expirent dans 4 mois. Si vous ne régularisez pas, je saisis l'inspection du travail. &raquo;</em></p>
+            <p>Le <span class="glossary" data-tooltip="Directeur Administratif et Financier : responsable de la gestion financière, comptable et administrative de l'entreprise.">DAF</span> ajoute : <span class="emphasis">&laquo; Et le <span class="glossary" data-tooltip="Plan d'Épargne Entreprise : dispositif d'épargne collectif qui permet aux salariés de se constituer un portefeuille de valeurs mobilières avec l'aide de l'entreprise (abondement). Les sommes sont bloquées 5 ans.">PEE</span> actuel est sous-performant, les salariés se plaignent. &raquo;</span></p>
             <p class="emphasis">Que faites-vous ?</p>
         </div>
         <div class="choices-container" id="ch3-choices">
@@ -509,16 +548,16 @@
         <h2 class="chapter-title">Strat&eacute;gie d'&eacute;pargne salariale</h2>
         <div class="tool-reveal">
             <div class="tool-reveal-icon">&#128176;</div>
-            <h3>&Eacute;pargne Salariale</h3>
-            <p>Exiliance audite vos dispositifs, r&eacute;alise les simulations budg&eacute;taires, lance un appel d'offres prestataires et r&eacute;dige l'accord d'entreprise.</p>
+            <h3>Épargne Salariale</h3>
+            <p>L'épargne salariale regroupe les dispositifs collectifs permettant aux salariés de se constituer une épargne avec l'aide de l'entreprise, dans des conditions fiscales avantageuses : <span class="glossary" data-tooltip="La participation redistribue une partie des bénéfices. L'intéressement récompense la performance. Le PEE (Plan d'Épargne Entreprise) et le PER (Plan d'Épargne Retraite) sont les véhicules de placement, souvent complétés par un abondement de l'employeur.">participation, intéressement, PEE et PER</span>.</p>
             <ul class="feature-list">
                 <li>Recensement et audit des dispositifs existants</li>
-                <li>Simulation budg&eacute;taire et sociale</li>
+                <li>Simulation budgétaire et sociale</li>
                 <li>Appel d'offres prestataires</li>
-                <li>R&eacute;daction de l'accord d'entreprise</li>
+                <li>Rédaction de l'accord d'entreprise</li>
             </ul>
             <a href="docs/Exiliance-Epargne-Salariale.pdf" download class="btn btn-cta">
-                📄 T&eacute;l&eacute;charger la fiche &Eacute;pargne Salariale
+                📄 Télécharger la fiche Épargne Salariale
             </a>
         </div>
         <button class="btn btn-secondary" onclick="goToChapter(4)">
@@ -529,9 +568,10 @@
         <span class="chapter-badge orange">Chapitre 4 &mdash; Package dirigeants</span>
         <h2 class="chapter-title">Le Dirigeant sous Pression</h2>
         <div class="narrative-box">
-            <p><strong>Mercredi apr&egrave;s-midi.</strong> Le fondateur de TechnoPlus, d&eacute;sormais directeur technique du groupe, vous convoque.</p>
-            <p><em class="highlight">&laquo; Mon ancien statut TNS me co&ucirc;tait beaucoup moins cher en charges. Maintenant qu'on m'impose un mandat social dans votre structure, je veux un package au moins &eacute;quivalent. &raquo;</em></p>
-            <p>Le DAF vous glisse : <span class="emphasis">&laquo; Attention &agrave; l'optimisation fiscale, on ne peut pas tout cumuler. Et c'est 100% confidentiel. &raquo;</span></p>
+            <p><strong>Mercredi après-midi.</strong> Le fondateur de TechnoPlus, désormais directeur technique du groupe, vous convoque.</p>
+            <p><em class="highlight">&laquo; Mon ancien statut <span class="glossary" data-tooltip="Travailleur Non Salarié : statut social des indépendants, gérants majoritaires de SARL, professions libérales. Les cotisations sociales sont généralement plus faibles qu'en régime salarié, mais la couverture sociale est aussi moins protectrice.">TNS</span> me coûtait beaucoup moins cher en charges. Maintenant qu'on m'impose un mandat social dans votre structure, je veux un package au moins équivalent. &raquo;</em></p>
+            <p>Le DAF vous glisse : <span class="emphasis">&laquo; Attention à l'optimisation fiscale, on ne peut pas tout cumuler. Et c'est 100% confidentiel. &raquo;</span></p>
+            <p>Le <span class="glossary" data-tooltip="Le package social d'un dirigeant comprend : la rémunération immédiate (salaire, bonus), la rémunération différée (stock-options, retraite supplémentaire), les avantages en nature, et le régime de protection sociale. Son optimisation dépend du statut juridique (mandataire, salarié, TNS).">package du dirigeant</span> est un sujet sensible qui touche à la fois au droit social, à la fiscalité et à la gouvernance.</p>
             <p class="emphasis">Que faites-vous ?</p>
         </div>
         <div class="choices-container" id="ch4-choices">
@@ -556,15 +596,15 @@
         <div class="tool-reveal">
             <div class="tool-reveal-icon">&#128188;</div>
             <h3>Package Social Dirigeants</h3>
-            <p>Exiliance r&eacute;alise un audit global du statut, optimise la structure fiscale et sociale, en toute confidentialit&eacute;.</p>
+            <p>La rémunération d'un dirigeant ne se résume pas au salaire. Le <span class="glossary" data-tooltip="Comprend : structures juridiques (SARL, SAS, SA), positions (mandataire social, salarié, TNS), formes de rémunération (immédiate, différée, collective, dividendes). Chaque combinaison a des implications fiscales et sociales différentes.">package social</span> inclut le statut juridique, le mix rémunératoire et les régimes spécifiques. Exiliance optimise l'ensemble en toute confidentialité.</p>
             <ul class="feature-list">
-                <li>Analyse des structures juridiques</li>
-                <li>&Eacute;tude comparative des statuts (mandataire, salari&eacute;, TNS)</li>
-                <li>Optimisation du mix r&eacute;mun&eacute;ratoire</li>
-                <li>Confidentialit&eacute; absolue garantie</li>
+                <li>Analyse des structures juridiques et implications</li>
+                <li>Étude comparative des statuts (mandataire, salarié, TNS)</li>
+                <li>Optimisation du mix rémunératoire (immédiat et différé)</li>
+                <li>Confidentialité absolue garantie</li>
             </ul>
             <a href="docs/Exiliance-Package-Dirigeants.pdf" download class="btn btn-cta">
-                📄 T&eacute;l&eacute;charger la fiche Package Dirigeants
+                📄 Télécharger la fiche Package Dirigeants
             </a>
         </div>
         <button class="btn btn-secondary" onclick="goToChapter(5)">
@@ -575,8 +615,9 @@
         <span class="chapter-badge gold">Chapitre 5 &mdash; Fin de carri&egrave;re</span>
         <h2 class="chapter-title">La Bombe &agrave; Retardement</h2>
         <div class="narrative-box">
-            <p><strong>Vendredi, 16h.</strong> Le commissaire aux comptes sonne l'alarme lors d'un appel :</p>
-            <p><em class="highlight">&laquo; 4 salari&eacute;s seniors totalisant 90 ans d'anciennet&eacute; partent en retraite d'ici 3 ans. Le passif social n'est pas provisionn&eacute;. L'impact estim&eacute; : 280 000&euro;. Si vous ne provisionnez pas, je mets une r&eacute;serve au bilan. &raquo;</em></p>
+            <p><strong>Vendredi, 16h.</strong> Le <span class="glossary" data-tooltip="Commissaire Aux Comptes : professionnel indépendant chargé de certifier les comptes annuels de l'entreprise. Il vérifie la sincérité et la régularité des états financiers.">commissaire aux comptes</span> sonne l'alarme lors d'un appel :</p>
+            <p><em class="highlight">&laquo; 4 salariés seniors totalisant 90 ans d'ancienneté partent en retraite d'ici 3 ans. Le <span class="glossary" data-tooltip="Le passif social regroupe les engagements financiers de l'entreprise envers ses salariés : indemnités de départ en retraite, médailles du travail, comptes épargne-temps... Ces sommes doivent être provisionnées dans les comptes.">passif social</span> n'est pas provisionné. L'impact estimé : 280 000€. Si vous ne provisionnez pas, je mets une réserve au bilan. &raquo;</em></p>
+            <p>Les <span class="glossary" data-tooltip="Indemnités de Fin de Carrière : sommes versées par l'employeur au salarié lors de son départ en retraite. Leur montant dépend de l'ancienneté et de la convention collective. Elles peuvent représenter plusieurs mois de salaire.">IFC (Indemnités de Fin de Carrière)</span> sont une véritable bombe à retardement pour les entreprises qui ne les anticipent pas.</p>
             <p>La direction vous regarde.</p>
             <p class="emphasis">Que faites-vous ?</p>
         </div>
@@ -602,15 +643,15 @@
         <div class="tool-reveal">
             <div class="tool-reveal-icon">&#128203;</div>
             <h3>Solution IFC</h3>
-            <p>Exiliance r&eacute;alise un &eacute;tat des lieux complet, &eacute;tablit un pr&eacute;visionnel sur 10 ans, valide avec le commissaire aux comptes et externalise le passif chez un assureur.</p>
+            <p>Les <span class="glossary" data-tooltip="Indemnités de Fin de Carrière : somme versée au salarié lors de son départ à la retraite. Le montant varie selon l'ancienneté et la convention collective. L'externalisation chez un assureur permet de lisser la charge dans le temps.">IFC</span> peuvent être externalisées chez un assureur pour lisser la charge et sécuriser le bilan. Cette approche est conforme aux <span class="glossary" data-tooltip="International Financial Reporting Standards : normes comptables internationales qui imposent la comptabilisation des engagements sociaux au bilan, y compris les IFC.">normes IFRS</span> et offre des avantages fiscaux.</p>
             <ul class="feature-list">
-                <li>Estimation des co&ucirc;ts sociaux de sortie</li>
-                <li>Pr&eacute;visionnel des engagements sur 10 ans</li>
+                <li>Estimation des coûts sociaux de sortie</li>
+                <li>Prévisionnel des engagements sur 10 ans</li>
                 <li>Validation avec le commissaire aux comptes</li>
                 <li>Externalisation du passif chez un assureur</li>
             </ul>
             <a href="docs/Exiliance-Solution-IFC.pdf" download class="btn btn-cta">
-                📄 T&eacute;l&eacute;charger la fiche Solution IFC
+                📄 Télécharger la fiche Solution IFC
             </a>
         </div>
         <button class="btn btn-primary" onclick="showFinalScore()">
@@ -678,7 +719,19 @@
                 <p>contact@exiliance.com &bull; 01 49 95 98 45</p>
                 <span class="cta-link">&Eacute;crire &rarr;</span>
             </a>
-        </div>        <div class="buttons-row">
+        </div>
+        <div class="tool-reveal" style="max-width:900px;width:100%;margin-bottom:1.5rem;text-align:left;">
+            <div class="tool-reveal-icon">🔄</div>
+            <h3 style="text-align:center;">Pilotage des contrats dans la durée</h3>
+            <p style="text-align:center;">Au-delà de la mise en place, Exiliance vous accompagne dans la <strong>gestion continue</strong> de vos dispositifs sociaux.</p>
+            <ul class="feature-list">
+                <li><strong>Bilan &amp; Perspectives</strong> — Réunions annuelles pour analyser les résultats, ajuster les garanties et anticiper les évolutions</li>
+                <li><strong>Suivi contrôle URSSAF</strong> — Préparation et accompagnement lors des contrôles, vérification de la conformité de vos dispositifs</li>
+                <li><strong>Négociations assureurs</strong> — Renégociation tarifaire régulière, mise en concurrence et défense de vos intérêts</li>
+                <li><strong>Gestion personnalisée</strong> — Un interlocuteur dédié qui connaît votre entreprise et pilote l'ensemble de vos contrats</li>
+            </ul>
+        </div>
+        <div class="buttons-row">
             <a href="tel:+33149959845" class="btn btn-primary">
                 &#128222; Prendre rendez-vous
             </a>
@@ -690,8 +743,9 @@
             </button>
         </div>
         <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.85rem; text-align: center; max-width: 500px;">
-            <strong>Exiliance</strong> &middot; Sant&eacute; &bull; Pr&eacute;voyance &bull; Retraite<br>
-            01 49 95 98 45 &middot; contact@exiliance.com
+            <strong>Exiliance</strong> &middot; Santé &bull; Prévoyance &bull; Retraite<br>
+            01 49 95 98 45 &middot; contact@exiliance.com<br>
+            <span style="font-size:0.75rem;color:rgba(29,53,87,0.35);">ORIAS : 17002631 / 25008215</span>
         </p>
     </div>
 
