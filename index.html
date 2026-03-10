@@ -1500,6 +1500,14 @@ function startMoodSounds(mood) {
     </div>
     <div id="inAppBrowserLoading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:16px;z-index:1;">Chargement...</div>
     <iframe id="inAppBrowserFrame" style="flex:1;width:100%;border:none;background:#fff;position:relative;z-index:2;" onload="document.getElementById('inAppBrowserLoading').style.display='none'"></iframe>
+    <!-- Interstitial for external sites that block iframes -->
+    <div id="inAppInterstitial" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;background:linear-gradient(135deg,#f1faee 0%,#e8f0e4 100%);padding:40px 30px;text-align:center;">
+        <div style="font-size:56px;margin-bottom:16px;">🌐</div>
+        <p id="interstitialDomain" style="color:#6b7b8d;font-size:14px;margin:0 0 12px;font-family:Inter,sans-serif;"></p>
+        <p style="color:#1d3557;font-size:17px;line-height:1.6;margin:0 0 32px;font-family:Inter,sans-serif;max-width:320px;">Le site va s'ouvrir dans votre navigateur.<br><strong style="color:#457b9d;">Revenez ici</strong> et appuyez sur <strong style="color:#e63946;">‹ Retour</strong> pour reprendre le jeu.</p>
+        <a id="interstitialLink" href="#" target="_blank" onclick="this.closest('#inAppInterstitial').querySelector('.interstitial-done').style.display='block'" style="display:inline-block;background:linear-gradient(135deg,#457b9d,#1d3557);color:#fff;padding:16px 40px;border-radius:14px;font-size:18px;font-weight:700;text-decoration:none;font-family:Inter,sans-serif;box-shadow:0 4px 15px rgba(29,53,87,0.3);transition:transform 0.2s;">Ouvrir le site &#8599;</a>
+        <p class="interstitial-done" style="display:none;color:#2a9d8f;font-size:15px;margin-top:24px;font-family:Inter,sans-serif;">✓ Site ouvert — appuyez sur <strong style="color:#e63946;">‹ Retour</strong> pour continuer</p>
+    </div>
 </div>
 
 <script>
@@ -1509,12 +1517,36 @@ function openInAppBrowser(url) {
     var urlDisplay = document.getElementById('inAppBrowserUrl');
     var openLink = document.getElementById('inAppBrowserOpen');
     var loading = document.getElementById('inAppBrowserLoading');
-    loading.style.display = 'block';
+    var interstitial = document.getElementById('inAppInterstitial');
+
+    // Can we iframe this URL? Only same-origin and github.io
+    var canIframe = false;
+    try {
+        var u = new URL(url, window.location.href);
+        canIframe = (u.origin === window.location.origin) || u.hostname.endsWith('.github.io');
+    } catch(e) {}
+
     browser.style.display = 'flex';
-    frame.src = url;
     urlDisplay.textContent = url.replace(/^https?:\/\//, '');
     openLink.href = url;
     document.body.style.overflow = 'hidden';
+
+    if (canIframe) {
+        frame.style.display = 'block';
+        interstitial.style.display = 'none';
+        loading.style.display = 'block';
+        frame.src = url;
+    } else {
+        frame.style.display = 'none';
+        loading.style.display = 'none';
+        interstitial.style.display = 'flex';
+        var done = interstitial.querySelector('.interstitial-done');
+        if (done) done.style.display = 'none';
+        try {
+            document.getElementById('interstitialDomain').textContent = new URL(url).hostname;
+            document.getElementById('interstitialLink').href = url;
+        } catch(e) {}
+    }
 }
 
 function closeInAppBrowser() {
