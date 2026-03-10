@@ -1491,5 +1491,51 @@ function startMoodSounds(mood) {
 })();
 </script>
 
+<!-- In-App Browser Modal (mobile) -->
+<div id="inAppBrowser" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;z-index:100000;background:#000;flex-direction:column;">
+    <div style="display:flex;align-items:center;background:#1d3557;padding:10px 12px;padding-top:max(10px,env(safe-area-inset-top));gap:10px;flex-shrink:0;">
+        <button onclick="closeInAppBrowser()" style="background:#e63946;color:#fff;border:none;border-radius:10px;padding:10px 20px;font-size:16px;font-weight:700;cursor:pointer;white-space:nowrap;">&#10094; Retour</button>
+        <span id="inAppBrowserUrl" style="color:#a8dadc;font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;"></span>
+        <a id="inAppBrowserOpen" href="#" target="_blank" style="color:#f1c963;font-size:12px;white-space:nowrap;text-decoration:none;">Ouvrir &#8599;</a>
+    </div>
+    <div id="inAppBrowserLoading" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:16px;z-index:1;">Chargement...</div>
+    <iframe id="inAppBrowserFrame" style="flex:1;width:100%;border:none;background:#fff;position:relative;z-index:2;" onload="document.getElementById('inAppBrowserLoading').style.display='none'"></iframe>
+</div>
+
+<script>
+function openInAppBrowser(url) {
+    var browser = document.getElementById('inAppBrowser');
+    var frame = document.getElementById('inAppBrowserFrame');
+    var urlDisplay = document.getElementById('inAppBrowserUrl');
+    var openLink = document.getElementById('inAppBrowserOpen');
+    var loading = document.getElementById('inAppBrowserLoading');
+    loading.style.display = 'block';
+    browser.style.display = 'flex';
+    frame.src = url;
+    urlDisplay.textContent = url.replace(/^https?:\/\//, '');
+    openLink.href = url;
+    document.body.style.overflow = 'hidden';
+}
+
+function closeInAppBrowser() {
+    var browser = document.getElementById('inAppBrowser');
+    var frame = document.getElementById('inAppBrowserFrame');
+    browser.style.display = 'none';
+    frame.src = '';
+    document.body.style.overflow = '';
+}
+
+// On mobile, intercept target="_blank" links → open in-app browser
+document.addEventListener('click', function(e) {
+    if (window.innerWidth > 768) return;
+    var link = e.target.closest('a[target="_blank"]');
+    if (!link) return;
+    var url = link.href;
+    if (!url || url.startsWith('mailto:') || url.startsWith('tel:')) return;
+    e.preventDefault();
+    openInAppBrowser(url);
+}, false);
+</script>
+
 </body>
 </html>
