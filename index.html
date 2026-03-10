@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>L'Odyss&#233;e de la Protection Sociale &#8212; Exiliance</title>
+    <meta name="description" content="Plongez dans l&#8217;univers Exiliance : un jeu immersif pour d&#233;couvrir comment piloter votre protection sociale avec performance.">
+    <meta property="og:title" content="L&#8217;Odyss&#233;e de la Protection Sociale &#8212; Exiliance">
+    <meta property="og:description" content="Un jeu immersif pour d&#233;couvrir l&#8217;univers Exiliance. Transformez vos obligations sociales en leviers de performance.">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#x1f6e1;&#xfe0f;</text></svg>">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>        :root {
+            --teal: #1D3557;
+            --teal-dark: #152842;
+            --teal-light: #2B4A7A;
+            --orange: #F5A623;
+            --orange-dark: #DF6A41;
+            --orange-light: #F8C06A;
+            --white: #FFFFFF;
+            --bg-dark: #FDFBF7;
+            --bg-card: #FFFFFF;
+            --bg-card-hover: #F9F6F1;
+            --text-main: #2D2926;
+            --text-muted: #8B8178;
+            --gold: #D4A96A;
+            --green: #7CB890;
+            --red: #D4727A;
+            --rose: #E8A0A6;
+            --rose-light: #FDF0F0;
+            --border: #EAE9E7;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; background: var(--bg-dark); color: var(--text-main); overflow: hidden; height: 100vh; width: 100vw; }
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        #game { width: 100vw; height: 100vh; position: relative; overflow: hidden; }
+        .screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2rem; opacity: 0; pointer-events: none; transition: opacity 0.8s ease, transform 0.8s ease; transform: translateY(30px); overflow-y: auto; }
+        .screen.active { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+        .screen > * { position: relative; z-index: 1; }        .title-logo { font-family: 'Playfair Display', serif; font-size: clamp(2.5rem, 7vw, 5rem); font-weight: 700; letter-spacing: -1px; margin-bottom: 0.5rem; color: var(--teal); }
+        .title-logo .logo-accent { color: var(--orange); }
+        .title-subtitle { font-family: 'Playfair Display', serif; font-size: clamp(1rem, 2.5vw, 1.4rem); color: var(--teal); margin-bottom: 0.5rem; text-align: center; font-weight: 400; font-style: italic; }
+        .title-tagline { font-size: clamp(0.85rem, 2vw, 1.05rem); color: var(--text-muted); margin-bottom: 2.5rem; text-align: center; max-width: 500px; line-height: 1.7; }
+        .btn { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2.5rem; border: none; border-radius: 2em; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; text-decoration: none; }
+        .btn-primary { background: var(--teal); color: white; box-shadow: 0 2px 12px rgba(29, 53, 87, 0.2); }
+        .btn-primary:hover { transform: translateY(-2px); background: var(--teal-dark); box-shadow: 0 6px 20px rgba(29, 53, 87, 0.3); }
+        .btn-secondary { background: transparent; color: var(--teal); border: 1.5px solid var(--teal); }
+        .btn-secondary:hover { background: rgba(29, 53, 87, 0.06); transform: translateY(-2px); }
+        .btn-cta { background: var(--orange); color: white; box-shadow: 0 2px 12px rgba(245, 166, 35, 0.25); font-size: 1rem; padding: 0.85rem 2rem; }
+        .btn-cta:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(245, 166, 35, 0.35); }        .chapter-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 1rem; border-radius: 99px; font-size: 0.8rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 1rem; }
+        .chapter-badge.teal { background: rgba(29, 53, 87, 0.08); color: var(--teal); }
+        .chapter-badge.orange { background: rgba(245, 166, 35, 0.1); color: var(--orange-dark); }
+        .chapter-badge.gold { background: rgba(212, 169, 106, 0.12); color: var(--gold); }
+        .chapter-title { font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700; margin-bottom: 1rem; text-align: center; line-height: 1.2; }
+        .narrative-box { max-width: 700px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; line-height: 1.8; font-size: 1.05rem; box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04); }
+        .narrative-box p { margin-bottom: 1rem; }
+        .narrative-box p:last-child { margin-bottom: 0; }
+        .narrative-box .highlight { color: var(--orange-dark); font-weight: 600; }
+        .narrative-box .emphasis { color: var(--teal); font-style: italic; }
+        .choices-container { display: flex; flex-direction: column; gap: 0.75rem; width: 100%; max-width: 650px; margin-bottom: 1.5rem; }
+        .choice-btn { width: 100%; padding: 1.2rem 1.5rem; background: var(--bg-card); border: 1.5px solid var(--border); border-radius: 16px; color: var(--text-main); font-size: 1rem; cursor: pointer; transition: all 0.3s ease; text-align: left; font-family: 'Inter', sans-serif; line-height: 1.5; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04); }
+        .choice-btn:hover { border-color: var(--teal); background: var(--bg-card-hover); transform: translateX(6px); box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08); }
+        .choice-btn.correct { border-color: var(--green); background: rgba(124, 184, 144, 0.1); animation: pulse-green 0.5s ease; }
+        .choice-btn.wrong { border-color: var(--red); background: rgba(212, 114, 122, 0.08); animation: shake 0.4s ease; }
+        @keyframes pulse-green { 0%, 100% { box-shadow: 0 0 0 0 rgba(124, 184, 144, 0); } 50% { box-shadow: 0 0 16px 4px rgba(124, 184, 144, 0.2); } }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }        .feedback-box { max-width: 650px; padding: 1.5rem; border-radius: 12px; margin-bottom: 1.5rem; line-height: 1.7; display: none; }
+        .feedback-box.show { display: block; animation: fadeIn 0.5s ease; }
+        .feedback-box.good { background: rgba(124, 184, 144, 0.1); border: 1px solid rgba(124, 184, 144, 0.3); }
+        .feedback-box.bad { background: rgba(212, 114, 122, 0.08); border: 1px solid rgba(212, 114, 122, 0.25); }
+        .feedback-box.neutral { background: rgba(245, 166, 35, 0.08); border: 1px solid rgba(245, 166, 35, 0.25); }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .tool-reveal { max-width: 650px; width: 100%; background: linear-gradient(135deg, rgba(29, 53, 87, 0.05), rgba(245, 166, 35, 0.05)); border: 1px solid var(--border); border-radius: 20px; padding: 2rem; margin-bottom: 1.5rem; text-align: center; box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06); }
+        .tool-reveal-icon { font-size: 3rem; margin-bottom: 1rem; }
+        .tool-reveal h3 { font-size: 1.5rem; color: var(--teal); margin-bottom: 0.75rem; }
+        .tool-reveal p { color: var(--text-muted); line-height: 1.7; margin-bottom: 1rem; }
+        .tool-reveal .feature-list { text-align: left; margin: 1rem 0; padding-left: 0; list-style: none; }
+        .tool-reveal .feature-list li { padding: 0.4rem 0; color: var(--text-main); display: flex; align-items: flex-start; gap: 0.5rem; }
+        .tool-reveal .feature-list li::before { content: "\2192"; color: var(--teal); font-weight: bold; flex-shrink: 0; }
+        .progress-bar-container { position: fixed; top: 0; left: 0; width: 100%; height: 3px; background: var(--border); z-index: 100; }
+        .progress-bar { height: 100%; background: linear-gradient(90deg, var(--teal), var(--orange)); transition: width 0.8s ease; border-radius: 0 2px 2px 0; }        .hud { position: fixed; top: 20px; right: 20px; display: flex; gap: 1rem; z-index: 50; opacity: 0; transition: opacity 0.5s ease; }
+        .hud.visible { opacity: 1; }
+        .hud-item { display: flex; flex-direction: column; align-items: center; padding: 0.6rem 1rem; background: rgba(255, 255, 255, 0.9); border: 1px solid var(--border); border-radius: 12px; min-width: 70px; backdrop-filter: blur(10px); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+        .hud-item .hud-label { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 0.2rem; }
+        .hud-item .hud-value { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--teal); }
+        .score-circle { width: 180px; height: 180px; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 1.5rem; position: relative; }
+        .score-circle svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+        .score-circle circle { fill: none; stroke-width: 6; }
+        .score-circle .bg-ring { stroke: var(--border); }
+        .score-circle .progress-ring { stroke: var(--orange); stroke-linecap: round; stroke-dasharray: 502; stroke-dashoffset: 502; transition: stroke-dashoffset 2s ease; }
+        .score-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: var(--teal); }
+        .score-label { font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; }
+        .rank-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .rank-description { color: var(--text-muted); margin-bottom: 2rem; max-width: 500px; text-align: center; line-height: 1.6; }        .cta-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1rem; max-width: 900px; width: 100%; margin-bottom: 2rem; }
+        .cta-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 1.5rem; transition: all 0.3s ease; text-decoration: none; color: inherit; display: flex; flex-direction: column; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); }
+        .cta-card:hover { border-color: var(--teal-light); transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08); }
+        .cta-card-icon { font-size: 2rem; margin-bottom: 0.75rem; }
+        .cta-card h4 { font-size: 1.1rem; margin-bottom: 0.5rem; color: var(--teal); }
+        .cta-card p { font-size: 0.9rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 1rem; flex: 1; }
+        .cta-card .cta-link { color: var(--orange-dark); font-weight: 600; font-size: 0.9rem; }
+        .stats-bars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem; max-width: 500px; width: 100%; margin-bottom: 1.5rem; }
+        .stat-bar { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 0.7rem 1rem; }
+        .stat-bar-header { display: flex; justify-content: space-between; margin-bottom: 0.4rem; }
+        .stat-bar-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); }
+        .stat-bar-value { font-family: 'Playfair Display', serif; font-weight: 600; font-size: 0.85rem; }
+        .stat-bar-track { height: 4px; background: var(--border); border-radius: 2px; overflow: hidden; }
+        .stat-bar-fill { height: 100%; border-radius: 2px; transition: width 1s ease; }
+        .stat-bar-fill.teal { background: var(--teal-light); }
+        .stat-bar-fill.orange { background: var(--orange); }
+        .stat-bar-fill.green { background: var(--green); }
+        .stat-bar-fill.gold { background: var(--gold); }        .chapter-transition { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); z-index: 200; display: flex; align-items: center; justify-content: center; flex-direction: column; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+        .chapter-transition.active { opacity: 1; pointer-events: auto; }
+        .chapter-transition .chapter-num { font-family: 'Inter', sans-serif; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 4px; color: var(--orange); margin-bottom: 0.5rem; }
+        .chapter-transition .chapter-name { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; color: var(--teal); }
+        .buttons-row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+        .exiliance-watermark { position: fixed; bottom: 15px; left: 50%; transform: translateX(-50%); z-index: 50; font-family: 'Inter', sans-serif; font-size: 0.75rem; color: rgba(29, 53, 87, 0.25); letter-spacing: 3px; text-transform: uppercase; }
+        .exiliance-watermark a { color: inherit; text-decoration: none; transition: color 0.3s ease; }
+        .exiliance-watermark a:hover { color: var(--teal); }
+        .audio-toggle { position: fixed; bottom: 20px; right: 20px; z-index: 100; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border); background: rgba(255, 255, 255, 0.9); color: var(--text-main); font-size: 1.3rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.3s ease; backdrop-filter: blur(10px); box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06); }
+        .audio-toggle:hover { border-color: var(--teal); background: var(--bg-card-hover); transform: scale(1.1); }
+        .audio-toggle.muted { opacity: 0.4; }
+        .audio-toggle .audio-bars { display: flex; align-items: flex-end; gap: 2px; height: 18px; }
+        .audio-toggle .audio-bars span { display: block; width: 3px; background: var(--teal); border-radius: 1px; animation: audioBar 1.2s ease-in-out infinite; }
+        .audio-toggle .audio-bars span:nth-child(1) { height: 6px; animation-delay: 0s; }
+        .audio-toggle .audio-bars span:nth-child(2) { height: 12px; animation-delay: 0.15s; }
+        .audio-toggle .audio-bars span:nth-child(3) { height: 8px; animation-delay: 0.3s; }
+        .audio-toggle .audio-bars span:nth-child(4) { height: 14px; animation-delay: 0.45s; }
+        .audio-toggle .audio-bars span:nth-child(5) { height: 5px; animation-delay: 0.6s; }
+        .audio-toggle.muted .audio-bars span { animation: none; height: 3px; background: var(--text-muted); }
+        @keyframes audioBar { 0%, 100% { transform: scaleY(1); } 50% { transform: scaleY(0.3); } }        #screen-title { justify-content: flex-start; padding-top: 2.5rem; }
+        #screen-title > * { opacity: 0; animation: fadeSlideIn 0.7s ease forwards; }
+        #screen-title > *:nth-child(1) { animation-delay: 0.1s; }
+        #screen-title > *:nth-child(2) { animation-delay: 0.25s; }
+        #screen-title > *:nth-child(3) { animation-delay: 0.4s; }
+        #screen-title > *:nth-child(4) { animation-delay: 0.55s; }
+        #screen-title > *:nth-child(5) { animation-delay: 0.7s; }
+        #screen-title > *:nth-child(6) { animation-delay: 0.85s; }
+        #screen-title > *:nth-child(7) { animation-delay: 1.0s; }
+        @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .how-it-works { max-width: 620px; width: 100%; margin-bottom: 1.5rem; text-align: center; }
+        .how-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--teal); margin-bottom: 1rem; font-weight: 600; }
+        .how-steps { display: flex; gap: 1rem; justify-content: center; }
+        .how-step { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 0.5rem; padding: 0.8rem 0.5rem; border-radius: 14px; background: rgba(255, 255, 255, 0.7); border: 1px solid var(--border); transition: all 0.3s ease; }
+        .how-step:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(29, 53, 87, 0.08); border-color: var(--teal-light); }
+        .how-step-icon { width: 32px; height: 32px; border-radius: 50%; background: linear-gradient(135deg, var(--teal), var(--teal-light)); color: white; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.9rem; flex-shrink: 0; }
+        .how-step-text strong { display: block; font-size: 0.82rem; color: var(--text-main); margin-bottom: 0.2rem; }
+        .how-step-text span { font-size: 0.75rem; color: var(--text-muted); line-height: 1.45; }
+        .philosophy-box { max-width: 520px; width: 100%; margin-bottom: 1.5rem; padding: 1rem 1.3rem; border-left: 3px solid var(--orange); background: rgba(245, 166, 35, 0.04); border-radius: 0 12px 12px 0; text-align: left; }
+        .philosophy-box p { font-size: 0.85rem; color: var(--text-main); line-height: 1.7; margin-bottom: 0.4rem; }
+        .philosophy-box p:last-child { margin-bottom: 0; }
+        .philosophy-box em { color: var(--teal); }
+        .philosophy-box strong { color: var(--orange-dark); }
+        .philosophy-signature { font-style: italic; color: var(--text-muted) !important; font-size: 0.8rem !important; margin-top: 0.3rem; }        .narrative-box p { opacity: 0; transform: translateY(8px); transition: opacity 0.5s ease, transform 0.5s ease; }
+        .narrative-box.revealed p { opacity: 1; transform: translateY(0); }
+        .narrative-box.revealed p:nth-child(1) { transition-delay: 0s; }
+        .narrative-box.revealed p:nth-child(2) { transition-delay: 0.25s; }
+        .narrative-box.revealed p:nth-child(3) { transition-delay: 0.5s; }
+        .narrative-box.revealed p:nth-child(4) { transition-delay: 0.75s; }
+        .narrative-box.revealed p:nth-child(5) { transition-delay: 1.0s; }
+        .narrative-box.revealed p:nth-child(6) { transition-delay: 1.25s; }
+        .choice-btn { position: relative; overflow: hidden; }
+        .choice-btn::after { content: ''; position: absolute; width: 0; height: 0; border-radius: 50%; background: rgba(29, 53, 87, 0.06); top: 50%; left: 50%; transform: translate(-50%, -50%); transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease; opacity: 0; }
+        .choice-btn:active::after { width: 400px; height: 400px; opacity: 1; transition: none; }
+        .choice-btn::before { content: '\2192'; position: absolute; right: 1rem; top: 50%; transform: translateY(-50%) translateX(-5px); opacity: 0; color: var(--teal); font-weight: bold; transition: opacity 0.3s ease, transform 0.3s ease; }
+        .choice-btn:hover::before { opacity: 1; transform: translateY(-50%) translateX(0); }
+        .score-pop { position: fixed; top: 55px; right: 25px; z-index: 60; font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; pointer-events: none; animation: scorePop 1.5s ease forwards; }
+        .score-pop.good { color: var(--green); }
+        .score-pop.bad { color: var(--red); }
+        .score-pop.neutral { color: var(--orange); }
+        @keyframes scorePop { 0% { opacity: 1; transform: translateY(0) scale(1); } 30% { transform: translateY(-10px) scale(1.3); } 100% { opacity: 0; transform: translateY(-40px) scale(0.8); } }
+        .hud-value.bump { animation: hudBump 0.4s ease; }
+        @keyframes hudBump { 0% { transform: scale(1); } 50% { transform: scale(1.3); color: var(--orange); } 100% { transform: scale(1); } }
+        .screen.active .tool-reveal { animation: toolRevealEntrance 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; animation-delay: 0.5s; opacity: 0; }
+        @keyframes toolRevealEntrance { 0% { opacity: 0; transform: scale(0.85) translateY(20px); } 100% { opacity: 1; transform: scale(1) translateY(0); } }
+        .screen.active .tool-reveal-icon { animation: iconWobble 0.6s ease; animation-delay: 1.2s; }
+        @keyframes iconWobble { 0% { transform: rotate(0deg); } 20% { transform: rotate(-12deg); } 40% { transform: rotate(10deg); } 60% { transform: rotate(-6deg); } 80% { transform: rotate(3deg); } 100% { transform: rotate(0deg); } }        .chapter-stepper { display: flex; align-items: center; justify-content: center; gap: 0; margin-bottom: 1rem; }
+        .step-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); border: 2px solid var(--border); transition: all 0.3s ease; flex-shrink: 0; }
+        .step-dot.completed { background: var(--teal); border-color: var(--teal); }
+        .step-dot.active { background: var(--orange); border-color: var(--orange); animation: dotPulse 1.5s ease infinite; }
+        .step-line { width: 20px; height: 2px; background: var(--border); transition: background 0.3s ease; }
+        .step-line.completed { background: var(--teal); }
+        @keyframes dotPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(245, 166, 35, 0.3); } 50% { box-shadow: 0 0 0 6px rgba(245, 166, 35, 0); } }
+        @media (max-width: 768px) {
+            .screen { padding: 1rem; padding-top: 2.5rem; }
+            .narrative-box { padding: 1.5rem; font-size: 0.95rem; }
+            .hud { top: 12px; right: 12px; gap: 0.5rem; }
+            .hud-item { padding: 0.4rem 0.6rem; min-width: 55px; }
+            .hud-item .hud-value { font-size: 1rem; }
+            .cta-grid { grid-template-columns: 1fr; }
+            .tool-reveal { padding: 1.5rem; }
+            .stats-bars { grid-template-columns: 1fr; }
+            .choice-btn { font-size: 0.9rem; padding: 1rem; }
+            .btn { padding: 0.85rem 1.8rem; font-size: 1rem; }
+            .how-steps { flex-direction: column; gap: 0.6rem; }
+            .how-step { flex-direction: row; text-align: left; padding: 0.7rem 1rem; }
+            .how-step-text { text-align: left; }
+            #screen-title { padding-top: 1.5rem; }
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(29, 53, 87, 0.15); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(29, 53, 87, 0.25); }
+    </style>
+</head>
+<body>
+<div class="progress-bar-container">
+    <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+</div>
+<div class="hud" id="hud">
+    <div class="hud-item">
+        <span class="hud-label">Score</span>
+        <span class="hud-value" id="hudScore">0</span>
+    </div>
+    <div class="hud-item">
+        <span class="hud-label">Chapitre</span>
+        <span class="hud-value" id="hudChapter">1/5</span>
+    </div>
+</div>
+<div class="chapter-transition" id="chapterTransition">
+    <div class="chapter-num" id="transChapterNum"></div>
+    <div class="chapter-name" id="transChapterName"></div>
+</div>
+<button class="audio-toggle muted" id="audioToggle" onclick="toggleAudio()" title="Activer/couper la musique">
+    <div class="audio-bars">
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+</button>
+<div class="exiliance-watermark">
+    <a href="https://www.exiliance.com" target="_blank">Exiliance</a>
+</div>
+<canvas id="particles-canvas"></canvas>
+<div id="game">
+    <div class="screen active" id="screen-title">
+        <img src="https://www.exiliance.com/wp-content/uploads/logo-exiliance.png" alt="Exiliance" style="height: 100px; margin-bottom: 0.8rem; object-fit: contain;">
+        <div class="title-subtitle">L'Odyss&eacute;e de la Protection Sociale</div>
+        <div class="title-tagline">
+            Transformez vos obligations sociales en leviers de performance.
+        </div>
+        <div class="how-it-works">
+            <h3 class="how-title">Comment &ccedil;a marche ?</h3>
+            <div class="how-steps">
+                <div class="how-step">
+                    <div class="how-step-icon">1</div>
+                    <div class="how-step-text">
+                        <strong>Vivez les crises</strong>
+                        <span>Vous &ecirc;tes DRH d'une ETI en croissance. 5 urgences de protection sociale vous attendent.</span>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-icon">2</div>
+                    <div class="how-step-text">
+                        <strong>Prenez les bonnes d&eacute;cisions</strong>
+                        <span>3 options &agrave; chaque crise. Un seul r&eacute;flexe d'expert.</span>
+                    </div>
+                </div>
+                <div class="how-step">
+                    <div class="how-step-icon">3</div>
+                    <div class="how-step-text">
+                        <strong>D&eacute;couvrez les solutions</strong>
+                        <span>Chaque chapitre r&eacute;v&egrave;le un outil Exiliance concret.</span>
+                    </div>
+                </div>
+            </div>
+        </div>        <div class="philosophy-box">
+            <p>
+                Chez <em>Exiliance</em>, nous croyons que la protection sociale n'est pas une contrainte &agrave; subir mais un <strong>syst&egrave;me pilotable</strong>.
+                Notre mission : rendre vos dispositifs sociaux <strong>transparents, performants et align&eacute;s</strong> avec vos valeurs.
+                Cette aventure interactive est notre fa&ccedil;on de vous le prouver.
+            </p>
+            <p class="philosophy-signature">&mdash; L'&eacute;quipe Exiliance</p>
+        </div>
+        <button class="btn btn-primary" onclick="startGame()">
+            Commencer l'aventure &#10148;
+        </button>
+        <p style="margin-top: 1rem; color: var(--text-muted); font-size: 0.82rem;">
+            ~8 minutes &bull; 5 chapitres
+        </p>
+        <p style="margin-top: 0.5rem; color: rgba(29,53,87,0.25); font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;">
+            EXILIANCE &mdash; Sant&eacute; &bull; Pr&eacute;voyance &bull; Retraite
+        </p>
+    </div>
+    <div class="screen" id="screen-prologue">
+        <span class="chapter-badge teal">Prologue</span>
+        <h2 class="chapter-title">Votre Mission</h2>
+        <div class="narrative-box">
+            <p>Vous venez d'&ecirc;tre nomm&eacute;(e) DRH d'<span class="highlight">IndustriePlus</span>, une ETI industrielle de 120 salari&eacute;s qui vient de finaliser l'acquisition de <span class="highlight">TechnoPlus</span> (60 salari&eacute;s).</p>
+            <p><strong>Lundi matin, 8h30.</strong> La direction g&eacute;n&eacute;rale vous convoque :</p>
+            <p><em class="highlight">&laquo; Les contrats d'assurance de TechnoPlus expirent dans 3 mois, leurs taux retraite sont incoh&eacute;rents, et 4 seniors partent l'an prochain. On compte sur vous. &raquo;</em></p>
+            <p>180 salari&eacute;s. 5 crises de protection sociale. Des d&eacute;cisions &agrave; prendre.</p>
+            <p class="emphasis">&Ecirc;tes-vous pr&ecirc;t(e) ?</p>
+        </div>
+        <button class="btn btn-primary" onclick="goToChapter(1)">
+            Relever le d&eacute;fi &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch1-intro">
+        <span class="chapter-badge orange">Chapitre 1 &mdash; Pr&eacute;voyance &amp; Sant&eacute;</span>
+        <h2 class="chapter-title">La Mutuelle en Feu</h2>
+        <div class="narrative-box">
+            <p><strong>Mardi, 9h.</strong> Votre courtier vous appelle avec une mauvaise nouvelle.</p>
+            <p>L'assureur sant&eacute;/pr&eacute;voyance du groupe annonce une <span class="highlight">hausse de 28% des cotisations</span>. Motif : deux arr&ecirc;ts longue dur&eacute;e et un d&eacute;c&egrave;s l'an dernier ont fait exploser la sinistralit&eacute;.</p>
+            <p>Le CSE exige des explications. Les salari&eacute;s de TechnoPlus, habitu&eacute;s &agrave; des <span class="emphasis">garanties sup&eacute;rieures</span>, refusent tout nivellement par le bas.</p>
+            <p>Le renouvellement est dans <span class="highlight">2 mois</span>.</p>
+            <p class="emphasis">Que faites-vous en priorit&eacute; ?</p>
+        </div>
+        <div class="choices-container" id="ch1-choices">
+            <button class="choice-btn" data-choice="1" onclick="selectChoice('ch1', 1)">
+                &#128202; Lancer un appel d'offres multi-assureurs avec un audit complet de la sinistralit&eacute; et une analyse d&eacute;mographique
+            </button>
+            <button class="choice-btn" data-choice="2" onclick="selectChoice('ch1', 2)">
+                &#128176; Accepter la hausse en la r&eacute;percutant 50/50 employeur-salari&eacute;s
+            </button>
+            <button class="choice-btn" data-choice="3" onclick="selectChoice('ch1', 3)">
+                &#9986; R&eacute;silier imm&eacute;diatement et chercher le tarif le moins cher
+            </button>
+        </div>
+        <div class="feedback-box" id="ch1-feedback"></div>
+        <button class="btn btn-primary" id="ch1-next" style="display:none" onclick="showScreen('screen-ch1-reveal')">
+            D&eacute;couvrir la solution &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch1-reveal">
+        <span class="chapter-badge orange">Chapitre 1 &mdash; Solution</span>
+        <h2 class="chapter-title">Ma&icirc;triser sa sinistralit&eacute;</h2>
+        <div class="tool-reveal">
+            <div class="tool-reveal-icon">&#128737;&#65039;</div>
+            <h3>Accompagnement Pr&eacute;voyance &amp; Sant&eacute;</h3>
+            <p>Exiliance audite votre sinistralit&eacute;, lance un appel d'offres structur&eacute; et n&eacute;gocie des tarifs comp&eacute;titifs adapt&eacute;s &agrave; la r&eacute;alit&eacute; de votre entreprise : p&eacute;nibilit&eacute;, absent&eacute;isme, d&eacute;mographie.</p>
+            <ul class="feature-list">
+                <li>Audit de sinistralit&eacute; et analyse d&eacute;mographique</li>
+                <li>Appel d'offres multi-assureurs</li>
+                <li>N&eacute;gociation tarifaire sur-mesure</li>
+                <li>Pilotage continu des contrats</li>
+            </ul>
+            <a href="https://www.exiliance.com" target="_blank" class="btn btn-cta">
+                D&eacute;couvrir l'offre Exiliance &#10148;
+            </a>
+        </div>
+        <button class="btn btn-secondary" onclick="goToChapter(2)">
+            Chapitre suivant &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch2-intro">
+        <span class="chapter-badge orange">Chapitre 2 &mdash; Retraite compl&eacute;mentaire</span>
+        <h2 class="chapter-title">Le Casse-t&ecirc;te AGIRC-ARRCO</h2>
+        <div class="narrative-box">
+            <p><strong>Jeudi matin.</strong> Le service paie vous alerte : la DSN de TechnoPlus g&eacute;n&egrave;re des <span class="highlight">erreurs syst&eacute;matiques</span>.</p>
+            <p>En creusant, vous d&eacute;couvrez que TechnoPlus avait des <span class="emphasis">taux d&eacute;rogatoires AGIRC-ARRCO</span> bien sup&eacute;rieurs aux v&ocirc;tres. Les salari&eacute;s transf&eacute;r&eacute;s cotisent &agrave; des taux diff&eacute;rents pour un m&ecirc;me poste.</p>
+            <p>L'AGIRC-ARRCO vous demande de <span class="highlight">r&eacute;gulariser sous 6 mois</span>.</p>
+            <p class="emphasis">Que faites-vous ?</p>
+        </div>
+        <div class="choices-container" id="ch2-choices">
+            <button class="choice-btn" data-choice="1" onclick="selectChoice('ch2', 1)">
+                &#128201; Aligner tout le monde sur les taux conventionnels les plus bas
+            </button>
+            <button class="choice-btn" data-choice="2" onclick="selectChoice('ch2', 2)">
+                &#128164; Ignorer le probl&egrave;me en esp&eacute;rant que la caisse ne revienne pas
+            </button>
+            <button class="choice-btn" data-choice="3" onclick="selectChoice('ch2', 3)">
+                &#128270; Faire un &eacute;tat des lieux complet et calculer un Taux Moyen Pond&eacute;r&eacute; (TMP)
+            </button>
+        </div>
+        <div class="feedback-box" id="ch2-feedback"></div>
+        <button class="btn btn-primary" id="ch2-next" style="display:none" onclick="showScreen('screen-ch2-reveal')">
+            D&eacute;couvrir la solution &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch2-reveal">
+        <span class="chapter-badge orange">Chapitre 2 &mdash; Solution</span>
+        <h2 class="chapter-title">Harmoniser les taux retraite</h2>
+        <div class="tool-reveal">
+            <div class="tool-reveal-icon">&#128200;</div>
+            <h3>Consolidation AGIRC-ARRCO</h3>
+            <p>Exiliance r&eacute;alise un &eacute;tat des lieux complet, calcule le TMP r&eacute;glementaire, n&eacute;gocie avec les caisses et r&eacute;dige l'accord d'entreprise en partenariat avec Dairia Avocats.</p>
+            <ul class="feature-list">
+                <li>Recensement des taux par structure</li>
+                <li>Calcul du TMP r&eacute;glementaire</li>
+                <li>N&eacute;gociation avec les caisses de retraite</li>
+                <li>R&eacute;daction de l'accord d'entreprise (Dairia Avocats)</li>
+            </ul>
+            <a href="https://www.exiliance.com" target="_blank" class="btn btn-cta">
+                D&eacute;couvrir l'offre &#10148;
+            </a>
+        </div>
+        <button class="btn btn-secondary" onclick="goToChapter(3)">
+            Chapitre suivant &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch3-intro">
+        <span class="chapter-badge orange">Chapitre 3 &mdash; &Eacute;pargne salariale</span>
+        <h2 class="chapter-title">L'&Eacute;pargne Oubli&eacute;e</h2>
+        <div class="narrative-box">
+            <p><strong>Lundi suivant.</strong> Un d&eacute;l&eacute;gu&eacute; syndical d&eacute;barque dans votre bureau :</p>
+            <p><em class="highlight">&laquo; Avec 180 salari&eacute;s, la participation est obligatoire. TechnoPlus n'avait rien. Nos accords d'int&eacute;ressement expirent dans 4 mois. Si vous ne r&eacute;gularisez pas, je saisis l'inspection du travail. &raquo;</em></p>
+            <p>Le DAF ajoute : <span class="emphasis">&laquo; Et le PEE actuel est sous-performant, les salari&eacute;s se plaignent. &raquo;</span></p>
+            <p class="emphasis">Que faites-vous ?</p>
+        </div>
+        <div class="choices-container" id="ch3-choices">
+            <button class="choice-btn" data-choice="1" onclick="selectChoice('ch3', 1)">
+                &#128230; Mettre en place un PEE a minima avec le premier prestataire venu
+            </button>
+            <button class="choice-btn" data-choice="2" onclick="selectChoice('ch3', 2)">
+                &#128640; Auditer tous les dispositifs et d&eacute;finir une strat&eacute;gie globale avec appel d'offres
+            </button>
+            <button class="choice-btn" data-choice="3" onclick="selectChoice('ch3', 3)">
+                &#9999; N&eacute;gocier un accord de participation seul en urgence
+            </button>
+        </div>
+        <div class="feedback-box" id="ch3-feedback"></div>
+        <button class="btn btn-primary" id="ch3-next" style="display:none" onclick="showScreen('screen-ch3-reveal')">
+            D&eacute;couvrir la solution &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch3-reveal">
+        <span class="chapter-badge orange">Chapitre 3 &mdash; Solution</span>
+        <h2 class="chapter-title">Strat&eacute;gie d'&eacute;pargne salariale</h2>
+        <div class="tool-reveal">
+            <div class="tool-reveal-icon">&#128176;</div>
+            <h3>&Eacute;pargne Salariale</h3>
+            <p>Exiliance audite vos dispositifs, r&eacute;alise les simulations budg&eacute;taires, lance un appel d'offres prestataires et r&eacute;dige l'accord d'entreprise.</p>
+            <ul class="feature-list">
+                <li>Recensement et audit des dispositifs existants</li>
+                <li>Simulation budg&eacute;taire et sociale</li>
+                <li>Appel d'offres prestataires</li>
+                <li>R&eacute;daction de l'accord d'entreprise</li>
+            </ul>
+            <a href="https://www.exiliance.com" target="_blank" class="btn btn-cta">
+                D&eacute;couvrir l'offre &#10148;
+            </a>
+        </div>
+        <button class="btn btn-secondary" onclick="goToChapter(4)">
+            Chapitre suivant &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch4-intro">
+        <span class="chapter-badge orange">Chapitre 4 &mdash; Package dirigeants</span>
+        <h2 class="chapter-title">Le Dirigeant sous Pression</h2>
+        <div class="narrative-box">
+            <p><strong>Mercredi apr&egrave;s-midi.</strong> Le fondateur de TechnoPlus, d&eacute;sormais directeur technique du groupe, vous convoque.</p>
+            <p><em class="highlight">&laquo; Mon ancien statut TNS me co&ucirc;tait beaucoup moins cher en charges. Maintenant qu'on m'impose un mandat social dans votre structure, je veux un package au moins &eacute;quivalent. &raquo;</em></p>
+            <p>Le DAF vous glisse : <span class="emphasis">&laquo; Attention &agrave; l'optimisation fiscale, on ne peut pas tout cumuler. Et c'est 100% confidentiel. &raquo;</span></p>
+            <p class="emphasis">Que faites-vous ?</p>
+        </div>
+        <div class="choices-container" id="ch4-choices">
+            <button class="choice-btn" data-choice="1" onclick="selectChoice('ch4', 1)">
+                &#128196; Lui proposer un contrat de travail classique avec le m&ecirc;me salaire brut
+            </button>
+            <button class="choice-btn" data-choice="2" onclick="selectChoice('ch4', 2)">
+                &#128172; Laisser le DAF g&eacute;rer, c'est un sujet financier
+            </button>
+            <button class="choice-btn" data-choice="3" onclick="selectChoice('ch4', 3)">
+                &#128269; Commander un audit complet : statut, structure juridique, mix r&eacute;mun&eacute;ratoire
+            </button>
+        </div>
+        <div class="feedback-box" id="ch4-feedback"></div>
+        <button class="btn btn-primary" id="ch4-next" style="display:none" onclick="showScreen('screen-ch4-reveal')">
+            D&eacute;couvrir la solution &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch4-reveal">
+        <span class="chapter-badge orange">Chapitre 4 &mdash; Solution</span>
+        <h2 class="chapter-title">Optimiser le package dirigeant</h2>
+        <div class="tool-reveal">
+            <div class="tool-reveal-icon">&#128188;</div>
+            <h3>Package Social Dirigeants</h3>
+            <p>Exiliance r&eacute;alise un audit global du statut, optimise la structure fiscale et sociale, en toute confidentialit&eacute;.</p>
+            <ul class="feature-list">
+                <li>Analyse des structures juridiques</li>
+                <li>&Eacute;tude comparative des statuts (mandataire, salari&eacute;, TNS)</li>
+                <li>Optimisation du mix r&eacute;mun&eacute;ratoire</li>
+                <li>Confidentialit&eacute; absolue garantie</li>
+            </ul>
+            <a href="https://www.exiliance.com" target="_blank" class="btn btn-cta">
+                D&eacute;couvrir l'offre &#10148;
+            </a>
+        </div>
+        <button class="btn btn-secondary" onclick="goToChapter(5)">
+            Chapitre suivant &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch5-intro">
+        <span class="chapter-badge gold">Chapitre 5 &mdash; Fin de carri&egrave;re</span>
+        <h2 class="chapter-title">La Bombe &agrave; Retardement</h2>
+        <div class="narrative-box">
+            <p><strong>Vendredi, 16h.</strong> Le commissaire aux comptes sonne l'alarme lors d'un appel :</p>
+            <p><em class="highlight">&laquo; 4 salari&eacute;s seniors totalisant 90 ans d'anciennet&eacute; partent en retraite d'ici 3 ans. Le passif social n'est pas provisionn&eacute;. L'impact estim&eacute; : 280 000&euro;. Si vous ne provisionnez pas, je mets une r&eacute;serve au bilan. &raquo;</em></p>
+            <p>La direction vous regarde.</p>
+            <p class="emphasis">Que faites-vous ?</p>
+        </div>
+        <div class="choices-container" id="ch5-choices">
+            <button class="choice-btn" data-choice="1" onclick="selectChoice('ch5', 1)">
+                &#128176; Provisionner la totalit&eacute; en une fois sur l'exercice en cours
+            </button>
+            <button class="choice-btn" data-choice="2" onclick="selectChoice('ch5', 2)">
+                &#128197; Demander au CAC un d&eacute;lai d'un an
+            </button>
+            <button class="choice-btn" data-choice="3" onclick="selectChoice('ch5', 3)">
+                &#128200; Lancer un &eacute;tat des lieux complet, pr&eacute;visionnel 10 ans, et externaliser le passif
+            </button>
+        </div>
+        <div class="feedback-box" id="ch5-feedback"></div>
+        <button class="btn btn-primary" id="ch5-next" style="display:none" onclick="showScreen('screen-ch5-reveal')">
+            D&eacute;couvrir la solution &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-ch5-reveal">
+        <span class="chapter-badge gold">Chapitre 5 &mdash; Solution</span>
+        <h2 class="chapter-title">Anticiper les fins de carri&egrave;re</h2>
+        <div class="tool-reveal">
+            <div class="tool-reveal-icon">&#128203;</div>
+            <h3>Solution IFC</h3>
+            <p>Exiliance r&eacute;alise un &eacute;tat des lieux complet, &eacute;tablit un pr&eacute;visionnel sur 10 ans, valide avec le commissaire aux comptes et externalise le passif chez un assureur.</p>
+            <ul class="feature-list">
+                <li>Estimation des co&ucirc;ts sociaux de sortie</li>
+                <li>Pr&eacute;visionnel des engagements sur 10 ans</li>
+                <li>Validation avec le commissaire aux comptes</li>
+                <li>Externalisation du passif chez un assureur</li>
+            </ul>
+            <a href="https://www.exiliance.com" target="_blank" class="btn btn-cta">
+                D&eacute;couvrir l'offre &#10148;
+            </a>
+        </div>
+        <button class="btn btn-primary" onclick="showFinalScore()">
+            Voir mon bilan &#10148;
+        </button>
+    </div>
+    <div class="screen" id="screen-score">
+        <span class="chapter-badge gold">Bilan Final</span>
+        <h2 class="chapter-title">Votre Bilan Protection Sociale</h2>
+        <div class="score-circle">
+            <svg viewBox="0 0 170 170">
+                <circle class="bg-ring" cx="85" cy="85" r="80"/>
+                <circle class="progress-ring" id="scoreRing" cx="85" cy="85" r="80"/>
+            </svg>
+            <span class="score-number" id="finalScore">0</span>
+            <span class="score-label">points</span>
+        </div>
+        <h2 class="rank-title" id="rankTitle"></h2>
+        <p class="rank-description" id="rankDescription"></p>
+        <div class="stats-bars" id="finalStats">
+            <div class="stat-bar">
+                <div class="stat-bar-header">
+                    <span class="stat-bar-label">Conformit&eacute;</span>
+                    <span class="stat-bar-value" id="statConformite">0%</span>
+                </div>
+                <div class="stat-bar-track"><div class="stat-bar-fill teal" id="barConformite" style="width:0%"></div></div>
+            </div>
+            <div class="stat-bar">
+                <div class="stat-bar-header">
+                    <span class="stat-bar-label">Anticipation</span>
+                    <span class="stat-bar-value" id="statReactivite">0%</span>
+                </div>
+                <div class="stat-bar-track"><div class="stat-bar-fill orange" id="barReactivite" style="width:0%"></div></div>
+            </div>            <div class="stat-bar">
+                <div class="stat-bar-header">
+                    <span class="stat-bar-label">Optimisation</span>
+                    <span class="stat-bar-value" id="statStrategie">0%</span>
+                </div>
+                <div class="stat-bar-track"><div class="stat-bar-fill green" id="barStrategie" style="width:0%"></div></div>
+            </div>
+            <div class="stat-bar">
+                <div class="stat-bar-header">
+                    <span class="stat-bar-label">Strat&eacute;gie RH</span>
+                    <span class="stat-bar-value" id="statSerenite">0%</span>
+                </div>
+                <div class="stat-bar-track"><div class="stat-bar-fill gold" id="barSerenite" style="width:0%"></div></div>
+            </div>
+        </div>
+        <div class="cta-grid">
+            <a href="https://www.exiliance.com" target="_blank" class="cta-card">
+                <div class="cta-card-icon" style="font-size:1.6rem;">&#128737;&#65039;</div>
+                <h4>Exiliance</h4>
+                <p>Votre partenaire protection sociale</p>
+                <span class="cta-link">D&eacute;couvrir &rarr;</span>
+            </a>
+            <a href="https://dairia-avocats.com" target="_blank" class="cta-card">
+                <div class="cta-card-icon" style="font-size:1.6rem;">&#9878;&#65039;</div>
+                <h4>Dairia Avocats</h4>
+                <p>Notre partenaire droit social</p>
+                <span class="cta-link">D&eacute;couvrir &rarr;</span>
+            </a>
+            <a href="mailto:contact@exiliance.com" class="cta-card">
+                <div class="cta-card-icon" style="font-size:1.6rem;">&#128222;</div>
+                <h4>Nous contacter</h4>
+                <p>contact@exiliance.com &bull; 01 49 95 98 45</p>
+                <span class="cta-link">&Eacute;crire &rarr;</span>
+            </a>
+        </div>        <div class="buttons-row">
+            <a href="tel:+33149959845" class="btn btn-primary">
+                &#128222; Prendre rendez-vous
+            </a>
+            <a href="mailto:contact@exiliance.com" class="btn btn-secondary">
+                &#9993; Nous &eacute;crire
+            </a>
+            <button class="btn btn-secondary" onclick="restartGame()">
+                &#128260; Rejouer
+            </button>
+        </div>
+        <p style="margin-top: 1.5rem; color: var(--text-muted); font-size: 0.85rem; text-align: center; max-width: 500px;">
+            <strong>Exiliance</strong> &middot; Sant&eacute; &bull; Pr&eacute;voyance &bull; Retraite<br>
+            01 49 95 98 45 &middot; contact@exiliance.com
+        </p>
+    </div>
+
+</div>
+<script>
+var state = {
+    score: 0,
+    chapter: 0,
+    choices: {},
+    stats: { conformite: 50, reactivite: 50, strategie: 50, serenite: 50 }
+};
+var TOTAL_CHAPTERS = 5;
+
+var chapterData = {
+    ch1: {
+        correct: 1,
+        feedback: {
+            1: { type: 'good', text: "Excellent r\u00e9flexe ! Un audit de sinistralit\u00e9 permet de comprendre les causes de la hausse et de pr\u00e9senter un dossier solide aux assureurs. L'analyse d\u00e9mographique (pyramide des \u00e2ges, p\u00e9nibilit\u00e9) est la cl\u00e9 pour obtenir un tarif juste. C'est exactement l'approche Exiliance : \u00e9valuer, s\u00e9curiser, optimiser.", score: 30, stats: { conformite: 15, reactivite: 20, strategie: 25, serenite: 10 } },
+            2: { type: 'bad', text: "R\u00e9percuter la hausse sans comprendre ses causes, c'est accepter de payer trop cher. Sans audit, vous n'avez aucun levier de n\u00e9gociation. Et le 50/50 risque de d\u00e9t\u00e9riorer le climat social.", score: 5, stats: { conformite: -5, reactivite: -10, strategie: -15, serenite: -10 } },
+            3: { type: 'neutral', text: "R\u00e9silier pour chercher moins cher est tentant, mais sans analyse de votre sinistralit\u00e9, le nouvel assureur appliquera des tarifs \u00e9lev\u00e9s aussi. Le moins-disant n'est pas toujours le mieux-disant en sant\u00e9/pr\u00e9voyance.", score: 15, stats: { conformite: 5, reactivite: 10, strategie: -5, serenite: 0 } }
+        }
+    },
+    ch2: {
+        correct: 3,
+        feedback: {
+            1: { type: 'neutral', text: "Aligner sur les taux conventionnels r\u00e9duit les co\u00fbts, mais les salari\u00e9s de TechnoPlus perdent un avantage acquis. Risque de contentieux et de d\u00e9motivation. Le Taux Moyen Pond\u00e9r\u00e9 est une solution plus \u00e9quilibr\u00e9e.", score: 15, stats: { conformite: 10, reactivite: 5, strategie: -5, serenite: -5 } },
+            2: { type: 'bad', text: "Ignorer une demande de r\u00e9gularisation de l'AGIRC-ARRCO, c'est s'exposer \u00e0 des redressements et des p\u00e9nalit\u00e9s. Les erreurs DSN s'accumulent et les salari\u00e9s risquent des probl\u00e8mes de reconstitution de carri\u00e8re.", score: 5, stats: { conformite: -20, reactivite: -15, strategie: -10, serenite: -15 } },
+            3: { type: 'good', text: "Bravo ! Le Taux Moyen Pond\u00e9r\u00e9 est LA solution r\u00e9glementaire pour harmoniser les taux apr\u00e8s une fusion. Il respecte l'\u00e9quit\u00e9 entre salari\u00e9s tout en ma\u00eetrisant le budget. Cela n\u00e9cessite un accord d'entreprise et une n\u00e9gociation avec les caisses.", score: 30, stats: { conformite: 25, reactivite: 15, strategie: 20, serenite: 15 } }
+        }
+    },    ch3: {
+        correct: 2,
+        feedback: {
+            1: { type: 'bad', text: "Mettre un PEE a minima en urgence, c'est cocher une case sans strat\u00e9gie. Vous perdez les synergies fiscales entre participation, int\u00e9ressement et PEE/PER. Et le prestataire choisi sans appel d'offres co\u00fbtera plus cher.", score: 5, stats: { conformite: 5, reactivite: -10, strategie: -20, serenite: -5 } },
+            2: { type: 'good', text: "Parfait ! L'\u00e9pargne salariale est un ensemble coh\u00e9rent : participation (obligatoire), int\u00e9ressement (levier RSE), PEE/PER (fid\u00e9lisation). L'audit + l'appel d'offres garantissent le meilleur rapport qualit\u00e9-prix et la conformit\u00e9 l\u00e9gale.", score: 30, stats: { conformite: 20, reactivite: 15, strategie: 25, serenite: 15 } },
+            3: { type: 'neutral', text: "N\u00e9gocier la participation seule en urgence r\u00e9pond au plus press\u00e9, mais vous passez \u00e0 c\u00f4t\u00e9 d'une opportunit\u00e9 strat\u00e9gique. L'int\u00e9ressement et le PER sont de puissants leviers de fid\u00e9lisation et d'optimisation fiscale.", score: 15, stats: { conformite: 15, reactivite: 10, strategie: -5, serenite: 5 } }
+        }
+    },
+    ch4: {
+        correct: 3,
+        feedback: {
+            1: { type: 'neutral', text: "Un contrat classique au m\u00eame brut est simple, mais probablement sous-optimal. Le dirigeant paiera plus de charges qu'en TNS, sans les avantages d'un package structur\u00e9. Une analyse globale permettrait de faire mieux pour les deux parties.", score: 15, stats: { conformite: 10, reactivite: 5, strategie: -10, serenite: 5 } },
+            2: { type: 'bad', text: "Le package du dirigeant n'est pas qu'un sujet financier. Il touche au droit social, \u00e0 la fiscalit\u00e9 personnelle, \u00e0 la protection sociale et \u00e0 la gouvernance. D\u00e9l\u00e9guer sans vision globale, c'est risquer une optimisation incoh\u00e9rente.", score: 5, stats: { conformite: -5, reactivite: -15, strategie: -20, serenite: -10 } },
+            3: { type: 'good', text: "Excellente d\u00e9cision ! Le package d'un dirigeant se pense globalement : statut juridique, forme de r\u00e9mun\u00e9ration imm\u00e9diate et diff\u00e9r\u00e9e, r\u00e9gimes sp\u00e9cifiques. C'est un sujet qui exige confidentialit\u00e9 absolue et expertise crois\u00e9e juridique-sociale.", score: 30, stats: { conformite: 15, reactivite: 20, strategie: 25, serenite: 15 } }
+        }
+    },
+    ch5: {
+        correct: 3,
+        feedback: {
+            1: { type: 'bad', text: "Provisionner 280 000\u20ac en une fois serait un choc de tr\u00e9sorerie d\u00e9sastreux pour l'exercice. Et ce montant ne fera qu'augmenter avec l'anciennet\u00e9. Il faut une approche progressive et structur\u00e9e.", score: 5, stats: { conformite: 5, reactivite: -15, strategie: -20, serenite: -15 } },
+            2: { type: 'neutral', text: "Reporter d'un an ne r\u00e8gle rien et risque la r\u00e9serve au bilan. Mais au moins vous ne prenez pas de d\u00e9cision pr\u00e9cipit\u00e9e. L'id\u00e9al est d'agir maintenant avec une vision long terme.", score: 15, stats: { conformite: -5, reactivite: 5, strategie: 0, serenite: -5 } },
+            3: { type: 'good', text: "Bravo ! L'externalisation chez un assureur permet de lisser la charge dans le temps, s\u00e9curiser le bilan (normes IFRS) et b\u00e9n\u00e9ficier d'exon\u00e9rations fiscales. Le pr\u00e9visionnel 10 ans donne une vision claire pour piloter les d\u00e9parts.", score: 30, stats: { conformite: 25, reactivite: 20, strategie: 25, serenite: 20 } }
+        }
+    }
+};
+function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+    var introMatch = screenId.match(/^screen-(ch\d+)-intro$/);
+    if (introMatch) {
+        var chKey = introMatch[1];
+        if (state.choices[chKey]) { screenId = 'screen-' + chKey + '-reveal'; }
+    }
+    var screen = document.getElementById(screenId);
+    screen.classList.add('active');
+    screen.scrollTop = 0;
+    var narrativeBox = screen.querySelector('.narrative-box');
+    if (narrativeBox) {
+        narrativeBox.classList.remove('revealed');
+        setTimeout(function() { narrativeBox.classList.add('revealed'); }, 300);
+    }
+    var chMatch = screenId.match(/screen-ch(\d+)/);
+    if (chMatch) { renderStepper(screen, parseInt(chMatch[1])); }
+    if (screenId.indexOf('-reveal') !== -1) playMood('reveal');
+}
+
+function renderStepper(screen, currentChapter) {
+    var existing = screen.querySelector('.chapter-stepper');
+    if (existing) existing.remove();
+    var stepper = document.createElement('div');
+    stepper.className = 'chapter-stepper';
+    for (var i = 1; i <= 5; i++) {
+        var dot = document.createElement('span');
+        dot.className = 'step-dot';
+        if (i < currentChapter) dot.classList.add('completed');
+        if (i === currentChapter) dot.classList.add('active');
+        stepper.appendChild(dot);        if (i < 5) {
+            var line = document.createElement('span');
+            line.className = 'step-line';
+            if (i < currentChapter) line.classList.add('completed');
+            stepper.appendChild(line);
+        }
+    }
+    var badge = screen.querySelector('.chapter-badge');
+    if (badge) { badge.parentNode.insertBefore(stepper, badge.nextSibling); }
+    else { screen.insertBefore(stepper, screen.firstChild); }
+}
+
+function showChapterTransition(num, name, callback) {
+    var trans = document.getElementById('chapterTransition');
+    document.getElementById('transChapterNum').textContent = 'Chapitre ' + num;
+    document.getElementById('transChapterName').textContent = name;
+    trans.classList.add('active');
+    setTimeout(function() {
+        trans.classList.remove('active');
+        setTimeout(callback, 300);
+    }, 2000);
+}
+
+function startGame() {
+    state.score = 0; state.chapter = 0; state.choices = {};
+    state.stats = { conformite: 50, reactivite: 50, strategie: 50, serenite: 50 };
+    updateHUD();
+    document.getElementById('hud').classList.add('visible');
+    showScreen('screen-prologue');
+    updateProgress(5);    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    musicMuted = false;
+    var btn = document.getElementById('audioToggle');
+    if (btn) btn.classList.remove('muted');
+    masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 1.0);
+    playMood('prologue');
+}
+
+function goToChapter(num) {
+    state.chapter = num;
+    updateHUD();
+    var chapters = {
+        1: { name: "La Mutuelle en Feu", screen: 'screen-ch1-intro' },
+        2: { name: "Le Casse-t\u00eate AGIRC-ARRCO", screen: 'screen-ch2-intro' },
+        3: { name: "L'\u00c9pargne Oubli\u00e9e", screen: 'screen-ch3-intro' },
+        4: { name: "Le Dirigeant sous Pression", screen: 'screen-ch4-intro' },
+        5: { name: "La Bombe \u00e0 Retardement", screen: 'screen-ch5-intro' }
+    };
+    var ch = chapters[num];
+    var progress = (num / TOTAL_CHAPTERS) * 85 + 10;
+    updateProgress(progress);
+    playMood('ch' + num);
+    showChapterTransition(num, ch.name, function() { showScreen(ch.screen); });
+}
+function selectChoice(chapter, choice) {
+    if (state.choices[chapter]) return;
+    state.choices[chapter] = choice;
+    var data = chapterData[chapter];
+    var feedback = data.feedback[choice];
+    var buttons = document.querySelectorAll('#' + chapter + '-choices .choice-btn');
+    buttons.forEach(function(btn) {
+        var btnChoice = parseInt(btn.dataset.choice);
+        if (btnChoice === choice) { btn.classList.add(btnChoice === data.correct ? 'correct' : 'wrong'); }
+        if (btnChoice === data.correct && btnChoice !== choice) { setTimeout(function() { btn.classList.add('correct'); }, 600); }
+        btn.style.pointerEvents = 'none';
+    });
+    var feedbackEl = document.getElementById(chapter + '-feedback');
+    feedbackEl.className = 'feedback-box show ' + feedback.type;
+    feedbackEl.innerHTML = feedback.text;
+    state.score += feedback.score;
+    Object.keys(feedback.stats).forEach(function(key) {
+        state.stats[key] = Math.max(0, Math.min(100, state.stats[key] + feedback.stats[key]));
+    });
+    updateHUD();
+    var popEl = document.createElement('div');
+    popEl.className = 'score-pop ' + feedback.type;
+    popEl.textContent = (feedback.score > 0 ? '+' : '') + feedback.score;
+    document.body.appendChild(popEl);
+    setTimeout(function() { popEl.remove(); }, 1600);
+    setTimeout(function() { document.getElementById(chapter + '-next').style.display = 'inline-flex'; }, 1500);
+}
+
+function updateHUD() {
+    var scoreEl = document.getElementById('hudScore');
+    scoreEl.textContent = state.score;
+    scoreEl.classList.remove('bump');
+    void scoreEl.offsetWidth;
+    scoreEl.classList.add('bump');
+    document.getElementById('hudChapter').textContent = Math.max(1, state.chapter) + '/5';
+}
+
+function updateProgress(percent) {
+    document.getElementById('progressBar').style.width = percent + '%';
+}
+function showFinalScore() {
+    updateProgress(100);
+    showScreen('screen-score');
+    document.getElementById('hud').classList.remove('visible');
+    playMood('score');
+    var pct = Math.round((state.score / 150) * 100);
+    var current = 0;
+    var target = state.score;
+    var scoreEl = document.getElementById('finalScore');
+    var interval = setInterval(function() {
+        current += 1;
+        if (current >= target) { current = target; clearInterval(interval); }
+        scoreEl.textContent = current;
+    }, 30);
+    setTimeout(function() {
+        var ring = document.getElementById('scoreRing');
+        var offset = 502 - (502 * (pct / 100));
+        ring.style.strokeDashoffset = offset;
+    }, 300);
+    var rank, desc;
+    if (pct >= 90) {
+        rank = "DRH Strat\u00e8ge";
+        desc = "Votre ma\u00eetrise de la protection sociale est remarquable. Vous savez transformer chaque obligation en levier de performance.";
+    } else if (pct >= 70) {
+        rank = "DRH \u00c9clair\u00e9(e)";
+        desc = "Vous avez de solides r\u00e9flexes. Quelques ajustements et vous atteindrez l\u2019excellence en pilotage social.";
+    } else if (pct >= 40) {
+        rank = "DRH en Progression";
+        desc = "Les bases sont l\u00e0, mais attention aux angles morts. Un accompagnement expert ferait la diff\u00e9rence.";
+    } else {
+        rank = "DRH en Zone de Risque";
+        desc = "Votre protection sociale a besoin d\u2019un diagnostic urgent. Ne laissez pas les risques s\u2019accumuler.";
+    }    document.getElementById('rankTitle').textContent = rank;
+    document.getElementById('rankDescription').textContent = desc;
+    setTimeout(function() {
+        ['conformite', 'reactivite', 'strategie', 'serenite'].forEach(function(key) {
+            var val = Math.min(100, Math.max(0, state.stats[key]));
+            var capKey = key.charAt(0).toUpperCase() + key.slice(1);
+            document.getElementById('stat' + capKey).textContent = val + '%';
+            document.getElementById('bar' + capKey).style.width = val + '%';
+        });
+    }, 500);
+}
+
+function restartGame() {
+    ['ch1', 'ch2', 'ch3', 'ch4', 'ch5'].forEach(function(ch) {
+        document.querySelectorAll('#' + ch + '-choices .choice-btn').forEach(function(btn) {
+            btn.classList.remove('correct', 'wrong', 'selected');
+            btn.style.pointerEvents = 'auto';
+        });
+        var fb = document.getElementById(ch + '-feedback');
+        fb.className = 'feedback-box';
+        fb.innerHTML = '';
+        var next = document.getElementById(ch + '-next');
+        if (next) next.style.display = 'none';
+    });
+    showScreen('screen-title');
+    updateProgress(0);
+    document.getElementById('hud').classList.remove('visible');
+    playMood('title');
+}
+var audioCtx = null;
+var musicMuted = true;
+var currentMood = null;
+var masterGain = null;
+var activeNodes = [];
+var arpIntervals = [];
+var crossfading = false;
+var reverbNode = null;
+var delayNode = null;
+var delayFeedback = null;
+var reverbGain = null;
+var delayGain = null;
+var dryGain = null;
+var effectsBus = null;
+
+function initAudio() {
+    if (audioCtx) return;
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    masterGain = audioCtx.createGain();
+    masterGain.gain.value = 0;
+    masterGain.connect(audioCtx.destination);
+    effectsBus = audioCtx.createGain();
+    effectsBus.gain.value = 1.0;
+    dryGain = audioCtx.createGain();
+    dryGain.gain.value = 0.7;
+    effectsBus.connect(dryGain);
+    dryGain.connect(masterGain);
+    reverbNode = audioCtx.createConvolver();
+    reverbNode.buffer = createReverbIR(2.8, 0.6);    reverbGain = audioCtx.createGain();
+    reverbGain.gain.value = 0.35;
+    effectsBus.connect(reverbNode);
+    reverbNode.connect(reverbGain);
+    reverbGain.connect(masterGain);
+    delayNode = audioCtx.createDelay(1.0);
+    delayNode.delayTime.value = 0.375;
+    delayFeedback = audioCtx.createGain();
+    delayFeedback.gain.value = 0.3;
+    delayGain = audioCtx.createGain();
+    delayGain.gain.value = 0.2;
+    var delayFilter = audioCtx.createBiquadFilter();
+    delayFilter.type = 'lowpass';
+    delayFilter.frequency.value = 2500;
+    effectsBus.connect(delayNode);
+    delayNode.connect(delayFilter);
+    delayFilter.connect(delayFeedback);
+    delayFeedback.connect(delayNode);
+    delayFilter.connect(delayGain);
+    delayGain.connect(masterGain);
+}
+
+function createReverbIR(duration, decay) {
+    var rate = audioCtx.sampleRate;
+    var length = Math.floor(rate * duration);
+    var ir = audioCtx.createBuffer(2, length, rate);
+    for (var ch = 0; ch < 2; ch++) {
+        var data = ir.getChannelData(ch);
+        for (var i = 0; i < length; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / length, decay);            if (i < rate * 0.08) {
+                data[i] += (Math.random() * 2 - 1) * 0.5 * Math.pow(1 - i / (rate * 0.08), 0.3);
+            }
+        }
+    }
+    return ir;
+}
+
+function toggleAudio() {
+    initAudio();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    musicMuted = !musicMuted;
+    var btn = document.getElementById('audioToggle');
+    if (musicMuted) {
+        btn.classList.add('muted');
+        masterGain.gain.linearRampToValueAtTime(0, audioCtx.currentTime + 0.5);
+    } else {
+        btn.classList.remove('muted');
+        masterGain.gain.linearRampToValueAtTime(0.35, audioCtx.currentTime + 0.5);
+        if (!currentMood) playMood('title');
+    }
+}
+
+function stopAllNodes(fadeDuration) {
+    var fade = fadeDuration || 0.3;
+    arpIntervals.forEach(function(id) { clearInterval(id); });
+    arpIntervals = [];
+    var now = audioCtx.currentTime;
+    activeNodes.forEach(function(n) {
+        try {
+            if (n.gain && n.gain.linearRampToValueAtTime) {
+                n.gain.cancelScheduledValues(now);
+                n.gain.setValueAtTime(n.gain.value, now);
+                n.gain.linearRampToValueAtTime(0, now + fade);
+            }
+            if (n.stop) { n.stop(now + fade + 0.05); }
+        } catch(e) {}
+    });
+    activeNodes = [];
+}
+function createRichPad(freq, gainVal, opts) {
+    opts = opts || {};
+    var type = opts.type || 'sine';
+    var detunes = opts.detunes || [-7, 0, 7];
+    var filterFreq = opts.filterFreq || 900;
+    var attackTime = opts.attack || 3.0;
+    var vibratoRate = opts.vibratoRate || 0.2;
+    var vibratoDepth = opts.vibratoDepth || 3;
+    var swellRate = opts.swellRate || 0;
+    var swellDepth = opts.swellDepth || 0;
+    var sumGain = audioCtx.createGain();
+    var filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass'; filter.frequency.value = filterFreq; filter.Q.value = 0.7;
+    sumGain.connect(filter); filter.connect(effectsBus);
+    var now = audioCtx.currentTime;
+    var perOscGain = gainVal / detunes.length;
+    detunes.forEach(function(d) {
+        var osc = audioCtx.createOscillator();
+        var g = audioCtx.createGain();
+        osc.type = type; osc.frequency.value = freq; osc.detune.value = d;
+        g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(perOscGain, now + attackTime);
+        osc.connect(g); g.connect(sumGain); osc.start(now);
+        activeNodes.push(osc, g);
+        if (vibratoDepth > 0) {
+            var vib = audioCtx.createOscillator();
+            var vibGain = audioCtx.createGain();
+            vib.type = 'sine'; vib.frequency.value = vibratoRate + Math.random() * 0.1;
+            vibGain.gain.value = vibratoDepth;
+            vib.connect(vibGain); vibGain.connect(osc.frequency); vib.start(now);
+            activeNodes.push(vib);
+        }
+    });    if (swellRate > 0 && swellDepth > 0) {
+        var swellLFO = audioCtx.createOscillator();
+        var swellGainNode = audioCtx.createGain();
+        swellLFO.type = 'sine'; swellLFO.frequency.value = swellRate;
+        swellGainNode.gain.value = swellDepth;
+        swellLFO.connect(swellGainNode); swellGainNode.connect(sumGain.gain);
+        swellLFO.start(now); activeNodes.push(swellLFO);
+    }
+    if (opts.filterLFORate) {
+        var fLfo = audioCtx.createOscillator();
+        var fLfoG = audioCtx.createGain();
+        fLfo.type = 'sine'; fLfo.frequency.value = opts.filterLFORate;
+        fLfoG.gain.value = opts.filterLFODepth || 200;
+        fLfo.connect(fLfoG); fLfoG.connect(filter.frequency);
+        fLfo.start(now); activeNodes.push(fLfo);
+    }
+    activeNodes.push(sumGain);
+    return { gain: sumGain, filter: filter };
+}
+
+function createSubBass(freq, gainVal, wobbleRate, wobbleDepth) {
+    var osc = audioCtx.createOscillator();
+    var osc2 = audioCtx.createOscillator();
+    var g = audioCtx.createGain();
+    var filt = audioCtx.createBiquadFilter();
+    osc.type = 'sine'; osc.frequency.value = freq;
+    osc2.type = 'sine'; osc2.frequency.value = freq; osc2.detune.value = -3;
+    filt.type = 'lowpass'; filt.frequency.value = 200; filt.Q.value = 2;
+    var now = audioCtx.currentTime;
+    g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(gainVal, now + 2.5);    osc.connect(filt); osc2.connect(filt); filt.connect(g); g.connect(effectsBus);
+    osc.start(now); osc2.start(now); activeNodes.push(osc, osc2, g);
+    if (wobbleRate) {
+        var wobble = audioCtx.createOscillator();
+        var wG = audioCtx.createGain();
+        wobble.type = 'sine'; wobble.frequency.value = wobbleRate;
+        wG.gain.value = wobbleDepth || 2;
+        wobble.connect(wG); wG.connect(osc.frequency); wG.connect(osc2.frequency);
+        wobble.start(now); activeNodes.push(wobble);
+    }
+}
+
+function createNoiseLayer(filterFreq, filterQ, gainVal, filterType, lfoRate, lfoDepth) {
+    var bufferSize = audioCtx.sampleRate * 4;
+    var buffer = audioCtx.createBuffer(2, bufferSize, audioCtx.sampleRate);
+    for (var ch = 0; ch < 2; ch++) {
+        var data = buffer.getChannelData(ch);
+        for (var i = 0; i < bufferSize; i++) { data[i] = Math.random() * 2 - 1; }
+    }
+    var src = audioCtx.createBufferSource();
+    src.buffer = buffer; src.loop = true;
+    var filt = audioCtx.createBiquadFilter();
+    filt.type = filterType || 'bandpass'; filt.frequency.value = filterFreq || 600; filt.Q.value = filterQ || 3;
+    var g = audioCtx.createGain();
+    var now = audioCtx.currentTime;
+    g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(gainVal || 0.02, now + 3);
+    src.connect(filt); filt.connect(g); g.connect(effectsBus); src.start(now);
+    activeNodes.push(src, g);
+    if (lfoRate) {
+        var lfo = audioCtx.createOscillator();
+        var lG = audioCtx.createGain();
+        lfo.type = 'sine'; lfo.frequency.value = lfoRate; lG.gain.value = lfoDepth || 100;
+        lfo.connect(lG); lG.connect(filt.frequency); lfo.start(now); activeNodes.push(lfo);
+    }
+    return { source: src, filter: filt, gain: g };
+}
+function playKick(freq, interval, vol) {
+    var id = setInterval(function() {
+        if (musicMuted || !audioCtx) return;
+        var now = audioCtx.currentTime;
+        var osc = audioCtx.createOscillator(); var g = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq * 3, now); osc.frequency.exponentialRampToValueAtTime(freq, now + 0.06);
+        g.gain.setValueAtTime(vol, now); g.gain.exponentialRampToValueAtTime(0.001, now + 0.25);
+        osc.connect(g); g.connect(effectsBus); osc.start(now); osc.stop(now + 0.3);
+    }, interval * 1000);
+    arpIntervals.push(id); activeNodes.push({ stop: function() { clearInterval(id); } });
+}
+
+function playHiHat(interval, vol, decay) {
+    var id = setInterval(function() {
+        if (musicMuted || !audioCtx) return;
+        var now = audioCtx.currentTime;
+        var bufLen = Math.floor(audioCtx.sampleRate * (decay || 0.05));
+        var buf = audioCtx.createBuffer(1, bufLen, audioCtx.sampleRate);
+        var data = buf.getChannelData(0);
+        for (var i = 0; i < bufLen; i++) { data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / bufLen, 3); }
+        var src = audioCtx.createBufferSource(); src.buffer = buf;
+        var hp = audioCtx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 7000;
+        var g = audioCtx.createGain();
+        g.gain.setValueAtTime(vol || 0.03, now); g.gain.exponentialRampToValueAtTime(0.001, now + (decay || 0.05));
+        src.connect(hp); hp.connect(g); g.connect(effectsBus); src.start(now);
+    }, interval * 1000);
+    arpIntervals.push(id); activeNodes.push({ stop: function() { clearInterval(id); } });
+}
+function playTick(freq, interval, vol, duration) {
+    var id = setInterval(function() {
+        if (musicMuted || !audioCtx) return;
+        var now = audioCtx.currentTime;
+        var osc = audioCtx.createOscillator(); var g = audioCtx.createGain();
+        var filt = audioCtx.createBiquadFilter();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now); osc.frequency.exponentialRampToValueAtTime(freq * 0.5, now + (duration || 0.04));
+        filt.type = 'highpass'; filt.frequency.value = 400;
+        g.gain.setValueAtTime(vol, now); g.gain.exponentialRampToValueAtTime(0.001, now + (duration || 0.04));
+        osc.connect(filt); filt.connect(g); g.connect(effectsBus);
+        osc.start(now); osc.stop(now + (duration || 0.04) + 0.01);
+    }, interval * 1000);
+    arpIntervals.push(id); activeNodes.push({ stop: function() { clearInterval(id); } });
+}
+
+function playPulse(freq, interval, vol) {
+    var id = setInterval(function() {
+        if (musicMuted || !audioCtx) return;
+        var now = audioCtx.currentTime;
+        var osc = audioCtx.createOscillator(); var g = audioCtx.createGain();
+        var filt = audioCtx.createBiquadFilter();
+        osc.type = 'sine'; osc.frequency.value = freq;
+        filt.type = 'lowpass'; filt.frequency.value = 300;
+        g.gain.setValueAtTime(0, now);
+        g.gain.linearRampToValueAtTime(vol || 0.04, now + 0.04);
+        g.gain.exponentialRampToValueAtTime(0.001, now + interval * 0.7);
+        osc.connect(filt); filt.connect(g); g.connect(effectsBus);
+        osc.start(now); osc.stop(now + interval * 0.8);
+    }, interval * 1000);
+    arpIntervals.push(id); activeNodes.push({ stop: function() { clearInterval(id); } });
+}
+function playArpeggio(notes, baseSpeed, vol, opts) {
+    opts = opts || {};
+    var idx = 0;
+    var waveType = opts.wave || 'triangle';
+    var filterFreq = opts.filterFreq || 3000;
+    var humanize = opts.humanize || 0.08;
+    var noteLengthVar = opts.noteLengthVar || 0.15;
+    var decayCurve = opts.decay || 0.85;
+    var pingPong = opts.pingPong || false;
+    var direction = 1;
+    function scheduleNext() {
+        if (musicMuted || !audioCtx) {
+            var waitId = setTimeout(scheduleNext, baseSpeed * 1000);
+            arpIntervals.push(waitId); return;
+        }
+        var now = audioCtx.currentTime;
+        var noteIdx = idx % notes.length;
+        if (pingPong) {
+            if (idx >= notes.length - 1) direction = -1;
+            if (idx <= 0) direction = 1;
+            noteIdx = Math.abs(idx % (notes.length * 2 - 2));
+            if (noteIdx >= notes.length) noteIdx = notes.length * 2 - 2 - noteIdx;
+        }
+        var freq = notes[noteIdx];
+        var timeVar = (Math.random() - 0.5) * humanize;
+        var noteLen = baseSpeed * (decayCurve + (Math.random() - 0.5) * noteLengthVar);
+        var osc = audioCtx.createOscillator(); var osc2 = audioCtx.createOscillator();
+        var g = audioCtx.createGain(); var filt = audioCtx.createBiquadFilter();
+        osc.type = waveType; osc.frequency.value = freq;
+        osc2.type = 'sine'; osc2.frequency.value = freq; osc2.detune.value = 5 + Math.random() * 4;        filt.type = 'lowpass'; filt.frequency.value = filterFreq; filt.Q.value = 0.5;
+        var attackVol = vol * (0.85 + Math.random() * 0.15);
+        g.gain.setValueAtTime(0, now); g.gain.linearRampToValueAtTime(attackVol, now + 0.01);
+        g.gain.exponentialRampToValueAtTime(0.001, now + noteLen);
+        osc.connect(filt); osc2.connect(filt); filt.connect(g); g.connect(effectsBus);
+        osc.start(now); osc2.start(now);
+        osc.stop(now + noteLen + 0.02); osc2.stop(now + noteLen + 0.02);
+        idx += direction;
+        var nextTime = (baseSpeed + timeVar) * 1000;
+        var tid = setTimeout(scheduleNext, nextTime);
+        arpIntervals.push(tid);
+    }
+    scheduleNext();
+}
+
+function playSparkle(notes, interval, vol) {
+    var id = setInterval(function() {
+        if (musicMuted || !audioCtx) return;
+        var now = audioCtx.currentTime;
+        var freq = notes[Math.floor(Math.random() * notes.length)];
+        var osc = audioCtx.createOscillator(); var g = audioCtx.createGain();
+        var filt = audioCtx.createBiquadFilter();
+        osc.type = 'sine'; osc.frequency.value = freq * (Math.random() > 0.5 ? 2 : 1);
+        filt.type = 'highpass'; filt.frequency.value = 2000;
+        g.gain.setValueAtTime(vol * (0.5 + Math.random() * 0.5), now);
+        g.gain.exponentialRampToValueAtTime(0.001, now + 0.4 + Math.random() * 0.3);
+        osc.connect(filt); filt.connect(g); g.connect(effectsBus);
+        osc.start(now); osc.stop(now + 0.8);
+    }, interval * 1000);
+    arpIntervals.push(id); activeNodes.push({ stop: function() { clearInterval(id); } });
+}
+
+function playMood(mood) {
+    if (!audioCtx || mood === currentMood) return;
+    if (activeNodes.length > 0) {
+        crossfading = true;
+        var previousNodes = activeNodes.slice();
+        var previousIntervals = arpIntervals.slice();
+        activeNodes = [];
+        arpIntervals = [];
+        var now = audioCtx.currentTime;
+        previousIntervals.forEach(function(id) { clearInterval(id); clearTimeout(id); });
+        previousNodes.forEach(function(n) {
+            try {
+                if (n.gain && n.gain.linearRampToValueAtTime) {
+                    n.gain.cancelScheduledValues(now);
+                    n.gain.setValueAtTime(n.gain.value, now);
+                    n.gain.linearRampToValueAtTime(0, now + 2.0);
+                }
+                if (n.stop) n.stop(now + 2.1);
+            } catch(e) {}
+        });
+        currentMood = mood;
+        setTimeout(function() {
+            crossfading = false;
+            startMoodSounds(mood);
+        }, 1800);
+    } else {
+        currentMood = mood;
+        startMoodSounds(mood);
+    }
+}
+
+function startMoodSounds(mood) {
+
+    if (mood === 'title') {
+        createRichPad(146.83, 0.10, { detunes: [-10, 0, 10], filterFreq: 700, attack: 4,
+            vibratoRate: 0.12, vibratoDepth: 4, swellRate: 0.06, swellDepth: 0.03,
+            filterLFORate: 0.04, filterLFODepth: 200 });
+        createRichPad(174.61, 0.07, { detunes: [-8, 3, 12], filterFreq: 650, attack: 5,
+            vibratoRate: 0.15, vibratoDepth: 3, swellRate: 0.08, swellDepth: 0.02 });
+        createRichPad(220.00, 0.08, { detunes: [-6, 0, 6], filterFreq: 800, attack: 3.5,
+            vibratoRate: 0.18, vibratoDepth: 2 });
+        createRichPad(293.66, 0.04, { type: 'triangle', detunes: [-5, 5], filterFreq: 1000,
+            attack: 4, swellRate: 0.05, swellDepth: 0.015 });
+        createSubBass(73.42, 0.04, 0.06, 1.5);
+        createNoiseLayer(400, 2, 0.012, 'bandpass', 0.03, 150);
+        playArpeggio([587.33, 440, 523.25, 349.23, 440, 523.25, 349.23, 293.66],
+            0.9, 0.025, { humanize: 0.12, wave: 'triangle', filterFreq: 2500, pingPong: true });
+    }
+
+    else if (mood === 'prologue') {
+        createRichPad(130.81, 0.08, { detunes: [-5, 0, 5], filterFreq: 900, attack: 3,
+            vibratoRate: 0.2, vibratoDepth: 2, swellRate: 0.07, swellDepth: 0.02 });
+        createRichPad(164.81, 0.06, { detunes: [-4, 4], filterFreq: 850, attack: 3.5,
+            vibratoRate: 0.22, vibratoDepth: 2 });
+        createRichPad(196.00, 0.07, { detunes: [-6, 0, 6], filterFreq: 950, attack: 2.5,
+            swellRate: 0.09, swellDepth: 0.018 });
+        createRichPad(261.63, 0.03, { type: 'triangle', detunes: [-3, 3], filterFreq: 1100,
+            attack: 4 });
+        createSubBass(65.41, 0.03);
+        playArpeggio([523.25, 392, 329.63, 392, 523.25, 659.25, 523.25, 392],
+            1.1, 0.022, { humanize: 0.1, wave: 'triangle', filterFreq: 2800, pingPong: true });
+        playPulse(130.81, 2.0, 0.015);
+    }
+
+    else if (mood === 'ch1') {
+        createRichPad(164.81, 0.07, { detunes: [-8, 0, 8], filterFreq: 600, attack: 1.5,
+            vibratoRate: 0.3, vibratoDepth: 5, swellRate: 0.15, swellDepth: 0.025 });
+        createRichPad(196.00, 0.05, { detunes: [-6, 6], filterFreq: 550, attack: 2,
+            vibratoRate: 0.25, vibratoDepth: 4 });
+        createRichPad(246.94, 0.05, { type: 'triangle', detunes: [-5, 5], filterFreq: 700,
+            attack: 1.8 });
+        createSubBass(82.41, 0.05, 0.1, 3);
+        playKick(55, 0.5, 0.045);
+        playArpeggio([659.25, 493.88, 587.33, 493.88, 392, 329.63, 392, 493.88],
+            0.3, 0.035, { humanize: 0.05, wave: 'sawtooth', filterFreq: 1800, decay: 0.7 });
+        playPulse(82.41, 0.5, 0.04);
+    }
+
+    else if (mood === 'ch2') {
+        createRichPad(116.54, 0.08, { detunes: [-12, 0, 12], filterFreq: 450, attack: 5,
+            vibratoRate: 0.08, vibratoDepth: 5, swellRate: 0.04, swellDepth: 0.025,
+            filterLFORate: 0.02, filterLFODepth: 100 });
+        createRichPad(138.59, 0.05, { detunes: [-9, 3, 9], filterFreq: 400, attack: 6,
+            vibratoRate: 0.1, vibratoDepth: 4 });
+        createRichPad(174.61, 0.04, { type: 'triangle', detunes: [-7, 7], filterFreq: 500,
+            attack: 4, swellRate: 0.06, swellDepth: 0.015 });
+        createSubBass(58.27, 0.06, 0.05, 2);
+        createNoiseLayer(300, 4, 0.015, 'bandpass', 0.02, 80);
+        createNoiseLayer(100, 8, 0.008, 'lowpass');
+        playArpeggio([466.16, 349.23, 277.18, 349.23, 233.08, 277.18],
+            1.2, 0.02, { humanize: 0.2, wave: 'triangle', filterFreq: 1500, decay: 0.9 });
+        playPulse(58.27, 1.5, 0.025);
+    }
+
+    else if (mood === 'ch3') {
+        createRichPad(110.00, 0.07, { detunes: [-6, 0, 6], filterFreq: 600, attack: 2,
+            vibratoRate: 0.25, vibratoDepth: 3, swellRate: 0.12, swellDepth: 0.02 });
+        createRichPad(130.81, 0.04, { type: 'triangle', detunes: [-5, 5], filterFreq: 650,
+            attack: 2.5 });
+        createRichPad(164.81, 0.05, { detunes: [-4, 4], filterFreq: 700, attack: 2,
+            swellRate: 0.1, swellDepth: 0.015 });
+        createSubBass(55.00, 0.04);
+        playTick(3500, 0.25, 0.025, 0.02);
+        playTick(1800, 0.5, 0.018, 0.03);
+        playKick(55, 1.0, 0.03);
+        playArpeggio([440, 329.63, 261.63, 329.63, 440, 523.25, 440, 329.63],
+            0.28, 0.03, { humanize: 0.04, wave: 'sawtooth', filterFreq: 2000, decay: 0.65 });
+    }
+
+    else if (mood === 'ch4') {
+        createRichPad(92.50, 0.07, { detunes: [-8, 0, 8], filterFreq: 700, attack: 1.5,
+            vibratoRate: 0.3, vibratoDepth: 4, swellRate: 0.14, swellDepth: 0.02,
+            filterLFORate: 0.08, filterLFODepth: 150 });
+        createRichPad(110.00, 0.05, { detunes: [-6, 6], filterFreq: 650, attack: 2,
+            vibratoRate: 0.28, vibratoDepth: 3 });
+        createRichPad(138.59, 0.05, { type: 'triangle', detunes: [-5, 5], filterFreq: 800,
+            attack: 1.8 });
+        createRichPad(185.00, 0.04, { detunes: [-4, 4], filterFreq: 750, attack: 2 });
+        createSubBass(46.25, 0.05, 0.08, 2);
+        playKick(46.25, 0.6, 0.04);
+        playHiHat(0.3, 0.02, 0.04);
+        playArpeggio([370, 277.18, 329.63, 370, 440, 370, 329.63, 277.18],
+            0.35, 0.035, { humanize: 0.06, wave: 'sawtooth', filterFreq: 2200, decay: 0.7 });
+    }
+
+    else if (mood === 'ch5') {
+        createRichPad(146.83, 0.10, { detunes: [-8, 0, 8], filterFreq: 1200, attack: 2.5,
+            vibratoRate: 0.2, vibratoDepth: 3, swellRate: 0.07, swellDepth: 0.025 });
+        createRichPad(185.00, 0.07, { detunes: [-6, 3, 9], filterFreq: 1100, attack: 3,
+            vibratoRate: 0.22, vibratoDepth: 2 });
+        createRichPad(220.00, 0.08, { detunes: [-5, 0, 5], filterFreq: 1300, attack: 2,
+            swellRate: 0.08, swellDepth: 0.02 });
+        createRichPad(293.66, 0.05, { type: 'triangle', detunes: [-4, 4], filterFreq: 1500,
+            attack: 2.5 });
+        createRichPad(369.99, 0.03, { detunes: [-3, 3], filterFreq: 1400, attack: 3 });
+        createSubBass(73.42, 0.04);
+        createNoiseLayer(2000, 1, 0.008, 'highpass', 0.05, 500);
+        playArpeggio([293.66, 369.99, 440, 587.33, 739.99, 587.33, 440, 369.99],
+            0.55, 0.035, { humanize: 0.08, wave: 'triangle', filterFreq: 3500, pingPong: true });
+        playSparkle([587.33, 739.99, 880, 1174.66], 0.8, 0.015);
+        playPulse(146.83, 1.0, 0.02);
+    }
+
+    else if (mood === 'reveal') {
+        createRichPad(155.56, 0.08, { detunes: [-7, 0, 7], filterFreq: 1100, attack: 2,
+            vibratoRate: 0.25, vibratoDepth: 3, swellRate: 0.09, swellDepth: 0.02 });
+        createRichPad(196.00, 0.06, { detunes: [-5, 5], filterFreq: 1000, attack: 2.5,
+            vibratoRate: 0.2, vibratoDepth: 2 });
+        createRichPad(233.08, 0.07, { detunes: [-4, 0, 4], filterFreq: 1200, attack: 2,
+            swellRate: 0.1, swellDepth: 0.018 });
+        createRichPad(311.13, 0.04, { type: 'triangle', detunes: [-3, 3], filterFreq: 1300,
+            attack: 3 });
+        createSubBass(77.78, 0.03);
+        playArpeggio([622.25, 466.16, 392, 466.16, 622.25, 466.16, 392, 311.13],
+            0.65, 0.028, { humanize: 0.1, wave: 'triangle', filterFreq: 3500, pingPong: true });
+        playSparkle([622.25, 783.99, 932.33, 1244.51], 0.5, 0.018);
+    }
+
+    else if (mood === 'score') {
+        createRichPad(98.00, 0.09, { detunes: [-8, 0, 8], filterFreq: 1100, attack: 2,
+            vibratoRate: 0.2, vibratoDepth: 3, swellRate: 0.08, swellDepth: 0.025 });
+        createRichPad(123.47, 0.06, { detunes: [-6, 3, 9], filterFreq: 1000, attack: 2.5,
+            vibratoRate: 0.22, vibratoDepth: 2 });
+        createRichPad(146.83, 0.07, { detunes: [-5, 0, 5], filterFreq: 1200, attack: 2,
+            swellRate: 0.09, swellDepth: 0.02 });
+        createRichPad(196.00, 0.05, { type: 'triangle', detunes: [-4, 4], filterFreq: 1300,
+            attack: 2.5 });
+        createRichPad(246.94, 0.04, { detunes: [-3, 3], filterFreq: 1400, attack: 3 });
+        createRichPad(293.66, 0.03, { detunes: [-2, 2], filterFreq: 1500, attack: 3.5 });
+        createSubBass(49.00, 0.04);
+        playArpeggio([784, 587.33, 493.88, 587.33, 784, 987.77, 784, 587.33],
+            0.45, 0.038, { humanize: 0.08, wave: 'triangle', filterFreq: 4000, pingPong: true });
+        playSparkle([784, 987.77, 1174.66, 1567.98], 0.6, 0.015);
+        playPulse(98.00, 0.8, 0.018);
+    }
+}
+
+// ========================= PARTICLES =========================
+(function initParticles() {
+    var canvas = document.getElementById('particles-canvas');
+    var ctx = canvas.getContext('2d');
+    var particles = [];
+    var PARTICLE_COUNT = 50;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
+
+    function createParticle() {
+        return {
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: (Math.random() - 0.5) * 0.3,
+            radius: Math.random() * 2 + 0.5,
+            opacity: Math.random() * 0.25 + 0.05
+        };
+    }
+
+    function init() {
+        resize();
+        particles = [];
+        for (var i = 0; i < PARTICLE_COUNT; i++) {
+            particles.push(createParticle());
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (var i = 0; i < particles.length; i++) {
+            var p = particles[i];
+            p.x += p.vx;
+            p.y += p.vy;
+            if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+            if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(29, 53, 87, ' + p.opacity + ')';
+            ctx.fill();
+
+            for (var j = i + 1; j < particles.length; j++) {
+                var p2 = particles[j];
+                var dx = p.x - p2.x;
+                var dy = p.y - p2.y;
+                var dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(p.x, p.y);
+                    ctx.lineTo(p2.x, p2.y);
+                    ctx.strokeStyle = 'rgba(29, 53, 87, ' + (0.05 * (1 - dist / 150)) + ')';
+                    ctx.stroke();
+                }
+            }
+        }
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    init();
+    draw();
+})();
+</script>
+
+</body>
+</html>
